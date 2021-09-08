@@ -1,0 +1,63 @@
+ECLIPSE IDE, JAVA = 11, JRE = JDK 11
+PROJETO 
+- DYNAMIC web PROJECT
+- JRE = JDK 11, JAVA 11
+- FACETS = JAVA 11
+- APACHE 10  
+- PostgreSql 1.22.1 
+
+OBS.: PARA O APACHE 10, O CTRL + SHIFT+ O IMPORTA AS BIBLIOTECAS DO SERVLET jakarta.servlet.ServletException, MAS, PARA O 
+- APACHE COM VERSÃO MENOR, EXEMPLO 9:
+-- OS IMPORTES SERÃO CRIADOS DO javax.servlet
+-- PESQUISAR NO GOOGLE javax.servlet maven
+-- SELECIONAR java Servlet API 4.0.1
+-- COPIAR A DEPENDÊNCIA E COLOCAR NO ARQUIVO pom.xml, abrir tag <dependencies> e colar a dependência, ao salvar o Maven baixa
+os arquivos necessário.
+
+PARA IMPLANTAR O PROJETO COM APACHE 10, NO SERVIDOR COM APACHE A BAIXO DA VERSÃO 10, OCORRERÁ INCOMPATIBILIDADES.
+PARA IMPLANTAR O PROJETO COM APACHE 9 , NO SERVIDOR APACHE 10, NÃO OCORRERÁ INCOMPATIBILIDADE.
+
+CONVERTER O PROJETO PARA PROJETO MAVEN
+- BOTÃO DIREITO NO PROJETO
+- CONFIGURE
+
+APÓS CRIAR UM SERVLET (apache 10)
+- CTRL + SHIFIT + O PARA IMPORTAR AS BIBLIOTECAS
+- SALVAR.
+
+FILTER (CTRL + SHIFIT + 0 PARA IMPORTAR AS BIBLIOTECAS JACKARTA SERVLET FILTER)
+- Intercepta todas as requisições e respostas do projeto
+- Normalmente verifica se o usuário está logado, se não, envia para a página de login
+
+AO CRIAR CLASSES DE MODELO, SEMPRE IMPLEMENTAR A CLASSE Serializable
+- Ex.:
+public class ModelLogin implements Serializable{
+	private static final long serialVersionUID = 1L;
+}
+
+--------------
+CLASSE DE CONEXÃO
+ - PESQUISAR "POSTGRESSQL MAVEN"
+ - acessar: https://mvnrepository.com/artifact/org.postgresql/postgresql
+ - selecionar: 	9.4.1212
+ - copiar código da dependência e colocar no arquivo pom.xml na tag <dependencies> após </description>
+ 
+ ------------
+ CRIAR O BANCO DE DADOS
+ 
+ ------------
+ CRIAR A PÁGINA DE ERROS
+ 
+ 
+ CTRL + SHIFT +  I para obter resultado do código selecionado no debug
+ 
+ ------------
+ TRABALHAR COM JSON
+  - PESQUISAR "jackson databind json maven"
+  - Acessar: https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+  - Selecionar: 2.12.3
+  - copiar código da dependência e colocar no arquivo pom.xml na tag <dependencies> após </description>
+  
+  
+ 
+ 
