@@ -47,7 +47,7 @@ private Connection connection;
 	
 	public ModelLogin consultaUsuario(String login) throws SQLException {
 		ModelLogin usuario = new ModelLogin();
-		String sql = "select * from model_login where upper(login) = upper(?);";
+		String sql = "select * from model_login where upper(login) = upper(?) and useradmin is false;";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setString(1, login);
 		ResultSet resultSet= preparedStatement.executeQuery();
@@ -63,7 +63,7 @@ private Connection connection;
 
 	public ModelLogin consultaUsuarioId(Long id) throws Exception {
 		ModelLogin usuario = new ModelLogin();
-		String sql = "select * from model_login where id = ?;";
+		String sql = "select * from model_login where id = ? and useradmin is false;";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setLong(1, id);
 		ResultSet resultSet= preparedStatement.executeQuery();
@@ -81,7 +81,7 @@ private Connection connection;
 		List<ModelLogin> listaUsuarios = new ArrayList<>();
 		
 		ModelLogin usuario = null;
-		String sql = "select * from model_login where upper(nome) like upper(?);";
+		String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false;";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setString(1, "%" + nome + "%");
 		ResultSet resultSet= preparedStatement.executeQuery();
@@ -97,7 +97,7 @@ private Connection connection;
 		List<ModelLogin> listaUsuarios = new ArrayList<>();
 		
 		ModelLogin usuario = null;
-		String sql = "select * from model_login";
+		String sql = "select * from model_login WHERE useradmin is false";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		ResultSet resultSet= preparedStatement.executeQuery();
 		while (resultSet.next()) {
@@ -118,7 +118,7 @@ private Connection connection;
 	}
 	
 	public void deletarUser(Long idUser) throws SQLException, Exception {
-		String sql = "delete from model_login where id = ?";
+		String sql = "delete from model_login where id = ?  and useradmin is false";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setLong(1, idUser);
