@@ -77,6 +77,7 @@ private Connection connection;
 			usuario.setEmail(resultSet.getString("email"));
 			usuario.setLogin(resultSet.getString("login"));
 			usuario.setSenha(resultSet.getString("senha"));
+			usuario.setUserAdmin(resultSet.getBoolean("useradmin"));
 		}
 		return usuario;
 	}
@@ -95,6 +96,7 @@ private Connection connection;
 			usuario.setEmail(resultSet.getString("email"));
 			usuario.setLogin(resultSet.getString("login"));
 			usuario.setSenha(resultSet.getString("senha"));
+			usuario.setUserAdmin(resultSet.getBoolean("useradmin"));
 		}
 		return usuario;
 	}

@@ -10,6 +10,7 @@ public class ModelLogin implements Serializable{
 	private String login;
 	private String senha;
 	private String email;
+	private boolean userAdmin;
 
 	public ModelLogin() {
 	}
@@ -23,6 +24,16 @@ public class ModelLogin implements Serializable{
 		this.email = email;
 	}
 	
+	
+	
+	public boolean isUserAdmin() {
+		return userAdmin;
+	}
+
+	public void setUserAdmin(boolean userAdmin) {
+		this.userAdmin = userAdmin;
+	}
+
 	public Long getId() {
 		return id;
 	}
