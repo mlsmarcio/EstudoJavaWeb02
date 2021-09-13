@@ -66,6 +66,16 @@
                                                                 <label class="float-label">Email:</label>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
+																<select class="form-control" aria-label="Default select example" name="perfil" id="perfil">
+																  <option disabled ${user.perfil == '' ? 'selected' :''}>Selecione o Perfil</option>
+																  <option value="ADMIN" ${user.perfil == 'ADMIN' ? 'selected' :''}>Administrador</option>
+																  <option value="SECRETARIA" ${user.perfil == 'SECRETARIA' ? 'selected' :''}>Secretária</option>
+																  <option value="AUXILIAR" ${user.perfil == 'AUXILIAR' ? 'selected' :''}>Auxiliar</option>
+																</select>
+																<span class="form-bar"></span>
+                                                                <label class="float-label">Perfil:</label>
+                                                            </div>
+                                                            <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="login" id="login" class="form-control" value="${user.login}" required autocomplete="off">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Login:</label>

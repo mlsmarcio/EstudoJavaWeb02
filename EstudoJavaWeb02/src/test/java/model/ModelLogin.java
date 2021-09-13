@@ -11,21 +11,31 @@ public class ModelLogin implements Serializable{
 	private String senha;
 	private String email;
 	private boolean userAdmin;
+	private String perfil;
 
 	public ModelLogin() {
 	}
 	
-	public ModelLogin(Long id, String nome, String login, String senha, String email) {
+	public ModelLogin(Long id, String nome, String login, String senha, String email, String perfil) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.login = login;
 		this.senha = senha;
 		this.email = email;
+		this.perfil = perfil;
 	}
 	
 	
 	
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+
 	public boolean isUserAdmin() {
 		return userAdmin;
 	}

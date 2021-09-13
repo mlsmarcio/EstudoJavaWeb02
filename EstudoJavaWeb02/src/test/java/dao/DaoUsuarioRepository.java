@@ -23,22 +23,24 @@ private Connection connection;
 		PreparedStatement preparedStatement = null;
 		
 		if (usuario.isNovo()) {
-			sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id) VALUES (?, ?, ?, ?, ?);";
+			sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil) VALUES (?, ?, ?, ?, ?, ?);";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, usuario.getLogin());
 			preparedStatement.setString(2, usuario.getSenha());
 			preparedStatement.setString(3, usuario.getNome());
 			preparedStatement.setString(4, usuario.getEmail());
 			preparedStatement.setLong(5, usuarioLogado);
+			preparedStatement.setString(6, usuario.getPerfil());
 		
 		}else {
-			sql = "update model_login set nome = ?, email = ?, login = ?, senha = ? where id = ?;";
+			sql = "update model_login set nome = ?, email = ?, login = ?, senha = ?, perfil=? where id = ?;";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, usuario.getNome());
 			preparedStatement.setString(2, usuario.getEmail());
 			preparedStatement.setString(3, usuario.getLogin());
 			preparedStatement.setString(4, usuario.getSenha());
-			preparedStatement.setLong(5, usuario.getId());
+			preparedStatement.setString(5, usuario.getPerfil());
+			preparedStatement.setLong(6, usuario.getId());
 		}
 		preparedStatement.execute();
 		connection.commit();
@@ -60,6 +62,7 @@ private Connection connection;
 			usuario.setEmail(resultSet.getString("email"));
 			usuario.setLogin(resultSet.getString("login"));
 			usuario.setSenha(resultSet.getString("senha"));
+			usuario.setPerfil(resultSet.getString("perfil"));
 		}
 		return usuario;
 	}
@@ -78,6 +81,7 @@ private Connection connection;
 			usuario.setLogin(resultSet.getString("login"));
 			usuario.setSenha(resultSet.getString("senha"));
 			usuario.setUserAdmin(resultSet.getBoolean("useradmin"));
+			usuario.setPerfil(resultSet.getString("perfil"));
 		}
 		return usuario;
 	}
@@ -97,6 +101,7 @@ private Connection connection;
 			usuario.setLogin(resultSet.getString("login"));
 			usuario.setSenha(resultSet.getString("senha"));
 			usuario.setUserAdmin(resultSet.getBoolean("useradmin"));
+			usuario.setPerfil(resultSet.getString("perfil"));
 		}
 		return usuario;
 	}
@@ -114,6 +119,7 @@ private Connection connection;
 			usuario.setEmail(resultSet.getString("email"));
 			usuario.setLogin(resultSet.getString("login"));
 			usuario.setSenha(resultSet.getString("senha"));
+			usuario.setPerfil(resultSet.getString("perfil"));
 		}
 		return usuario;
 	}
@@ -129,7 +135,7 @@ private Connection connection;
 		ResultSet resultSet= preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
-					"", resultSet.getString("email"));
+					"", resultSet.getString("email"), resultSet.getString("perfil"));
 			listaUsuarios.add(usuario);
 		}
 		return listaUsuarios;
@@ -146,7 +152,7 @@ private Connection connection;
 		
 		while (resultSet.next()) {
 			usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
-					"", resultSet.getString("email"));
+					"", resultSet.getString("email"), resultSet.getString("perfil"));
 			listaUsuarios.add(usuario);
 		}
 		return listaUsuarios;

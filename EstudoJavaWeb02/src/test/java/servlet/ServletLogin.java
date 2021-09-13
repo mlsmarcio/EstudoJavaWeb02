@@ -44,7 +44,7 @@ public class ServletLogin extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		ModelLogin modelLogin = new ModelLogin(0L, "", request.getParameter("login"), request.getParameter("senha"), "");
+		ModelLogin modelLogin = new ModelLogin(0L, "", request.getParameter("login"), request.getParameter("senha"), "", "");
 		String url = request.getParameter("url");
 		RequestDispatcher redireciona = null;
 		
@@ -57,7 +57,7 @@ public class ServletLogin extends HttpServlet {
 					modelLogin = daoUsuarioRepository.consultaUsuarioLogado(modelLogin.getLogin());
 					
 					request.getSession().setAttribute("usuario", modelLogin.getLogin());
-					request.getSession().setAttribute("isAdmin", modelLogin.isUserAdmin());
+					request.getSession().setAttribute("perfil", modelLogin.getPerfil());
 					
 					if (url == null || url.equals("null") || url.isEmpty()) {
 						url= "principal/principal.jsp";
