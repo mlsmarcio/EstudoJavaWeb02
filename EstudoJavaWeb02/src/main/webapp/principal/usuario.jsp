@@ -86,6 +86,17 @@
                                                                 <label class="float-label">Senha:</label>
                                                             </div>
                                                             
+															<div class="form-group row"> 
+															    <div class="col-sm-2">                                                           
+																  <input class="" type="radio" name="sexo" id="sexoM" value="M" ${user.sexo == 'M' ? 'checked' :''} >
+																  <label class="form-check-label" for="sexoM"> Masculino </label>
+																</div>
+																<div class="col-sm-2">										  
+																  <input class="" type="radio" name="sexo" id="sexoF" value="F" ${user.sexo == 'F' ? 'checked' :''}>
+																  <label class="form-check-label" for="sexoF"> Feminino </label>
+																</div>
+																<div class="col-sm-4"></div>
+                                                            </div>
 												            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="limpaForm();">Novo</button>
 												            <button class="btn btn-success waves-effect waves-light">Salvar</button>
 												            <button type="button" onclick="criarDelete();" class="btn btn-info waves-effect waves-light">Excluir</button>

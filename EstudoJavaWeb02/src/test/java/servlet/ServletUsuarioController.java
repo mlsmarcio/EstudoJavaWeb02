@@ -92,7 +92,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			
 			ModelLogin usuario = new ModelLogin(id != null && !id.isEmpty() ? Long.parseLong(id) : 0L, 
 					request.getParameter("nome"), request.getParameter("login"), request.getParameter("senha"), 
-					request.getParameter("email"), request.getParameter("perfil"));
+					request.getParameter("email"), request.getParameter("perfil"), request.getParameter("sexo"));
 			
 			if (daoUsuarioRepository.existeLogin(usuario.getLogin()) && usuario.isNovo()) {
 				request.setAttribute("msg", MSG.criar(TipoMSG.DANGER, "Atenção", "Login já cadastrado!"));

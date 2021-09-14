@@ -12,11 +12,12 @@ public class ModelLogin implements Serializable{
 	private String email;
 	private boolean userAdmin;
 	private String perfil;
+	private String sexo;
 
 	public ModelLogin() {
 	}
 	
-	public ModelLogin(Long id, String nome, String login, String senha, String email, String perfil) {
+	public ModelLogin(Long id, String nome, String login, String senha, String email, String perfil, String sexo) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -24,10 +25,19 @@ public class ModelLogin implements Serializable{
 		this.senha = senha;
 		this.email = email;
 		this.perfil = perfil;
+		this.sexo = sexo;
 	}
 	
 	
 	
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
 	public String getPerfil() {
 		return perfil;
 	}
