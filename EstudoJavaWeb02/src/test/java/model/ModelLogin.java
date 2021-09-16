@@ -13,11 +13,14 @@ public class ModelLogin implements Serializable{
 	private boolean userAdmin;
 	private String perfil;
 	private String sexo;
-
+	private String fotoUser;
+	private String extensaoFotoUser;
+	
 	public ModelLogin() {
 	}
 	
-	public ModelLogin(Long id, String nome, String login, String senha, String email, String perfil, String sexo) {
+	public ModelLogin(Long id, String nome, String login, String senha, String email, String perfil, String sexo
+						, String fotoUser, String extensaoFotoUser) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -26,10 +29,28 @@ public class ModelLogin implements Serializable{
 		this.email = email;
 		this.perfil = perfil;
 		this.sexo = sexo;
+		this.fotoUser = fotoUser;
+		this.extensaoFotoUser = extensaoFotoUser;
 	}
 	
 	
 	
+	public String getFotoUser() {
+		return fotoUser;
+	}
+
+	public void setFotoUser(String fotoUser) {
+		this.fotoUser = fotoUser;
+	}
+
+	public String getExtensaoFotoUser() {
+		return extensaoFotoUser;
+	}
+
+	public void setExtensaoFotoUser(String extensaoFotoUser) {
+		this.extensaoFotoUser = extensaoFotoUser;
+	}
+
 	public String getSexo() {
 		return sexo;
 	}

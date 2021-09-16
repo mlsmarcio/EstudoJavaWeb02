@@ -3,20 +3,27 @@ package servlet;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.DaoUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig; // prepara para o upload
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.MSG;
 import model.ModelLogin;
 import model.TipoMSG;
 
+@MultipartConfig
 @WebServlet(urlPatterns = {"/ServletUsuarioController"})
 public class ServletUsuarioController extends ServletGenericUtil {
 	private static final long serialVersionUID = 1L;
@@ -89,10 +96,21 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		try {
 			
 			String id = request.getParameter("id");
+			String imagemBase64 = null;
+			String extensaoFotoUser = null;
+			
+			/* OBTÉM A FOTO E CONVERTE PARA BASE 64 */
+			if (ServletFileUpload.isMultipartContent(request)) {
+				Part part = request.getPart("fileFoto");
+				byte[] foto = IOUtils.toByteArray(part.getInputStream()); /* Converte imagem para byte */
+				imagemBase64 ="data:" + part.getContentType() + ";base64," + new Base64().encodeBase64String(foto);
+				extensaoFotoUser = part.getContentType().split("\\/")[1];
+			}
 			
 			ModelLogin usuario = new ModelLogin(id != null && !id.isEmpty() ? Long.parseLong(id) : 0L, 
 					request.getParameter("nome"), request.getParameter("login"), request.getParameter("senha"), 
-					request.getParameter("email"), request.getParameter("perfil"), request.getParameter("sexo"));
+					request.getParameter("email"), request.getParameter("perfil"), request.getParameter("sexo"),
+					imagemBase64, extensaoFotoUser);
 			
 			if (daoUsuarioRepository.existeLogin(usuario.getLogin()) && usuario.isNovo()) {
 				request.setAttribute("msg", MSG.criar(TipoMSG.DANGER, "Atenção", "Login já cadastrado!"));

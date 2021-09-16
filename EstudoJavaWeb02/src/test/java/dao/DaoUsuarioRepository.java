@@ -23,7 +23,8 @@ private Connection connection;
 		PreparedStatement preparedStatement = null;
 		
 		if (usuario.isNovo()) {
-			sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil, sexo) VALUES (?, ?, ?, ?, ?, ?, ?);";
+			sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil, sexo, fotouser, extensaofoto) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, usuario.getLogin());
 			preparedStatement.setString(2, usuario.getSenha());
@@ -32,9 +33,12 @@ private Connection connection;
 			preparedStatement.setLong(5, usuarioLogado);
 			preparedStatement.setString(6, usuario.getPerfil());
 			preparedStatement.setString(7, usuario.getSexo());
+			preparedStatement.setString(8, usuario.getFotoUser());
+			preparedStatement.setString(9, usuario.getExtensaoFotoUser());
 		
 		}else {
-			sql = "update model_login set nome = ?, email = ?, login = ?, senha = ?, perfil=?, sexo=? where id = ?;";
+			sql = "update model_login set nome = ?, email = ?, login = ?, senha = ?, perfil=?, sexo=?, fotouser=?, extensaofoto=?"
+					+ " where id = ?;";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, usuario.getNome());
 			preparedStatement.setString(2, usuario.getEmail());
@@ -42,7 +46,9 @@ private Connection connection;
 			preparedStatement.setString(4, usuario.getSenha());
 			preparedStatement.setString(5, usuario.getPerfil());
 			preparedStatement.setString(6, usuario.getSexo());
-			preparedStatement.setLong(7, usuario.getId());
+			preparedStatement.setString(7, usuario.getFotoUser());
+			preparedStatement.setString(8, usuario.getExtensaoFotoUser());
+			preparedStatement.setLong(9, usuario.getId());
 		}
 		preparedStatement.execute();
 		connection.commit();
@@ -141,7 +147,8 @@ private Connection connection;
 		ResultSet resultSet= preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
-					"", resultSet.getString("email"), resultSet.getString("perfil"), resultSet.getString("sexo"));
+					"", resultSet.getString("email"), resultSet.getString("perfil"), resultSet.getString("sexo"),
+					resultSet.getString("fotouser"), resultSet.getString("extensaofoto"));
 			listaUsuarios.add(usuario);
 		}
 		return listaUsuarios;
@@ -158,7 +165,8 @@ private Connection connection;
 		
 		while (resultSet.next()) {
 			usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
-					"", resultSet.getString("email"), resultSet.getString("perfil"), resultSet.getString("perfil"));
+					"", resultSet.getString("email"), resultSet.getString("perfil"), resultSet.getString("perfil"),
+					resultSet.getString("fotouser"), resultSet.getString("extensaofoto"));
 			listaUsuarios.add(usuario);
 		}
 		return listaUsuarios;

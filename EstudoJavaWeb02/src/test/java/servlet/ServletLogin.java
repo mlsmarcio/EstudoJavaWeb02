@@ -44,7 +44,7 @@ public class ServletLogin extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		ModelLogin modelLogin = new ModelLogin(0L, "", request.getParameter("login"), request.getParameter("senha"), "", "", "");
+		ModelLogin modelLogin = new ModelLogin(0L, "", request.getParameter("login"), request.getParameter("senha"), "", "", "", "", "");
 		String url = request.getParameter("url");
 		RequestDispatcher redireciona = null;
 		

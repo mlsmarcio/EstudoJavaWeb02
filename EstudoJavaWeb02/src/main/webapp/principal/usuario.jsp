@@ -45,7 +45,10 @@
 		                                            <div class="card-block">
 		                                                <h4 class="sub-title">Cadastro de Usuários</h4>										
 				                                        
-                                                        <form class="form-material" autocomplete="off" method="post" action="<%= request.getContextPath() %>/ServletUsuarioController" id="formUser">
+				                                        <!-- enctype - para poder fazer upload de foto
+				                                        	 Adicionar a Notação @MultipartConfig no servlet
+				                                         -->
+                                                        <form class="form-material" enctype="multipart/form-data" autocomplete="off" method="post" action="<%= request.getContextPath() %>/ServletUsuarioController" id="formUser">
                                                         	
                                                         	<!--  AÇÃO QUE SERÁ ENVIADA PARA O SERVLET -->
                                                         	<input type="hidden" name="acao" id="acao" value="">
@@ -55,6 +58,16 @@
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">ID:</label>
                                                             </div>
+                                                            
+                                                            <div class="form-group form-default input-group mb-4">
+                                                           	  	<div class="input-group-prepend">
+                                                            	      <span class="input-group-text" id="basic-addon1">
+                                                            	      	<img id="fotoembase64" alt="Imagem Usuário" src="" width="70px">
+                                                            	      </span>
+																</div>
+																<input id="fileFoto" name="fileFoto" type="file" accept="image/*" onchange="visualizarImg('fotoembase64', 'fileFoto')" class="form-control-file" style="margin: 15px; margin-left: 5px;">
+                                                            </div>
+                                                            
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="nome" id="nome" class="form-control" required value="${user.nome}" autocomplete="off" autofocus>
                                                                 <span class="form-bar"></span>
@@ -196,6 +209,25 @@
     
 	
 	<script type="text/javascript">
+
+		function visualizarImg(fotoembase64, fileFoto){
+			let preview = document.getElementById(fotoembase64);
+			let fileUser = document.getElementById(fileFoto).files[0];
+
+			let reader = new FileReader();
+
+			reader.onloadend = function(){
+				preview.src = reader.result; /* Carrega a foto na tela */
+			};
+
+			if (fileUser){
+				reader.readAsDataURL(fileUser); /* Preview da Imagem */
+			}else {
+				preview.src = '';
+			}
+			
+		}
+	
 		function verEditar(id){
 			var urlAction = document.getElementById('formUser').action;
 			window.location.href = urlAction + '?acao=buscarEditar&id=' + id;
