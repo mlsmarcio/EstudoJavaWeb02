@@ -102,9 +102,11 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			/* OBTÉM A FOTO E CONVERTE PARA BASE 64 */
 			if (ServletFileUpload.isMultipartContent(request)) {
 				Part part = request.getPart("fileFoto");
-				byte[] foto = IOUtils.toByteArray(part.getInputStream()); /* Converte imagem para byte */
-				imagemBase64 ="data:" + part.getContentType() + ";base64," + new Base64().encodeBase64String(foto);
-				extensaoFotoUser = part.getContentType().split("\\/")[1];
+				if (part.getSize() > 0) {
+					byte[] foto = IOUtils.toByteArray(part.getInputStream()); /* Converte imagem para byte */
+					imagemBase64 ="data:" + part.getContentType() + ";base64," + new Base64().encodeBase64String(foto);
+					extensaoFotoUser = part.getContentType().split("\\/")[1];
+				}
 			}
 			
 			ModelLogin usuario = new ModelLogin(id != null && !id.isEmpty() ? Long.parseLong(id) : 0L, 

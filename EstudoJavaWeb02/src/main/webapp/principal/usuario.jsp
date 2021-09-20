@@ -48,7 +48,8 @@
 				                                        <!-- enctype - para poder fazer upload de foto
 				                                        	 Adicionar a Notação @MultipartConfig no servlet
 				                                         -->
-                                                        <form class="form-material" enctype="multipart/form-data" autocomplete="off" method="post" action="<%= request.getContextPath() %>/ServletUsuarioController" id="formUser">
+                                                        <form class="form-material" enctype="multipart/form-data" autocomplete="off" method="post" 
+                                                        	action="<%= request.getContextPath() %>/ServletUsuarioController" id="formUser">
                                                         	
                                                         	<!--  AÇÃO QUE SERÁ ENVIADA PARA O SERVLET -->
                                                         	<input type="hidden" name="acao" id="acao" value="">
@@ -61,11 +62,18 @@
                                                             
                                                             <div class="form-group form-default input-group mb-4">
                                                            	  	<div class="input-group-prepend">
-                                                            	      <span class="input-group-text" id="basic-addon1">
-                                                            	      	<img id="fotoembase64" alt="Imagem Usuário" src="" width="70px">
-                                                            	      </span>
+                                                            	    <span class="input-group-text" id="basic-addon1">
+																		<c:if test="${user.fotoUser != '' && user.fotoUser != null}">
+																		    <img id="fotoembase64" alt="Imagem Usuário" src="${user.fotoUser}" width="70px">
+																		</c:if>
+																		<c:if test="${user.fotoUser == '' || user.fotoUser == null}">
+																		    <img id="fotoembase64" alt="Imagem Usuário" src="resources/img/usuario.jpg" width="70px"> <!-- assets/images/avatar-1.jpg -->
+																		</c:if>
+                                                         	      		
+                                                            	    </span>
 																</div>
-																<input id="fileFoto" name="fileFoto" type="file" accept="image/*" onchange="visualizarImg('fotoembase64', 'fileFoto')" class="form-control-file" style="margin: 15px; margin-left: 5px;">
+																<input id="fileFoto" name="fileFoto" type="file" accept="image/*" onchange="visualizarImg('fotoembase64', 'fileFoto')" 
+																	class="form-control-file" style="margin: 15px; margin-left: 5px;">
                                                             </div>
                                                             
                                                             <div class="form-group form-default form-static-label">
@@ -80,7 +88,7 @@
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
 																<select class="form-control" aria-label="Default select example" name="perfil" id="perfil">
-																  <option disabled ${user.perfil == '' ? 'selected' :''}>Selecione o Perfil</option>
+																  <option disabled ${user.perfil == '' || user.perfil == null ? 'selected' :''}>Selecione o Perfil</option>
 																  <option value="ADMIN" ${user.perfil == 'ADMIN' ? 'selected' :''}>Administrador</option>
 																  <option value="SECRETARIA" ${user.perfil == 'SECRETARIA' ? 'selected' :''}>Secretária</option>
 																  <option value="AUXILIAR" ${user.perfil == 'AUXILIAR' ? 'selected' :''}>Auxiliar</option>
@@ -207,6 +215,7 @@
 	  </div>
 	</div>    
     
+	<!--  VERIFICAR COMO FUNCIONA O SALVAR E RECUPERAR IMAGEM  -->
 	
 	<script type="text/javascript">
 

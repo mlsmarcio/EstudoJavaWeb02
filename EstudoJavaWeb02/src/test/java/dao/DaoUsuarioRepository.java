@@ -37,7 +37,10 @@ private Connection connection;
 			preparedStatement.setString(9, usuario.getExtensaoFotoUser());
 		
 		}else {
-			sql = "update model_login set nome = ?, email = ?, login = ?, senha = ?, perfil=?, sexo=?, fotouser=?, extensaofoto=?"
+			boolean atualizarFoto = (usuario.getFotoUser() != null && !usuario.getFotoUser().isEmpty());
+			
+			sql = "update model_login set nome = ?, email = ?, login = ?, senha = ?, perfil=?, sexo=?"
+					+ (atualizarFoto ? ", fotouser=?, extensaofoto=?" : "")
 					+ " where id = ?;";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, usuario.getNome());
@@ -46,9 +49,15 @@ private Connection connection;
 			preparedStatement.setString(4, usuario.getSenha());
 			preparedStatement.setString(5, usuario.getPerfil());
 			preparedStatement.setString(6, usuario.getSexo());
-			preparedStatement.setString(7, usuario.getFotoUser());
-			preparedStatement.setString(8, usuario.getExtensaoFotoUser());
-			preparedStatement.setLong(9, usuario.getId());
+			
+			if (atualizarFoto) {
+				preparedStatement.setString(7, usuario.getFotoUser());
+				preparedStatement.setString(8, usuario.getExtensaoFotoUser());
+				preparedStatement.setLong(9, usuario.getId());
+				
+			}else{
+				preparedStatement.setLong(7, usuario.getId());
+			}
 		}
 		preparedStatement.execute();
 		connection.commit();
@@ -72,6 +81,7 @@ private Connection connection;
 			usuario.setSenha(resultSet.getString("senha"));
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
+			usuario.setFotoUser(resultSet.getString("fotouser"));
 		}
 		return usuario;
 	}
@@ -92,6 +102,7 @@ private Connection connection;
 			usuario.setUserAdmin(resultSet.getBoolean("useradmin"));
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
+			usuario.setFotoUser(resultSet.getString("fotouser"));
 		}
 		return usuario;
 	}
@@ -113,6 +124,7 @@ private Connection connection;
 			usuario.setUserAdmin(resultSet.getBoolean("useradmin"));
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
+			usuario.setFotoUser(resultSet.getString("fotouser"));
 		}
 		return usuario;
 	}
@@ -132,6 +144,7 @@ private Connection connection;
 			usuario.setSenha(resultSet.getString("senha"));
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
+			usuario.setFotoUser(resultSet.getString("fotouser"));
 		}
 		return usuario;
 	}
