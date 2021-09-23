@@ -44,7 +44,16 @@ public class ServletLogin extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		ModelLogin modelLogin = new ModelLogin(0L, "", request.getParameter("login"), request.getParameter("senha"), "", "", "", "", "");
+//		usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
+//		"", resultSet.getString("email"), resultSet.getBoolean("useradmin"), resultSet.getString("perfil"), 
+//		resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
+//		resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
+//		resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
+//		resultSet.getString("uf"), resultSet.getString("ibge"));			
+		
+		ModelLogin modelLogin = new ModelLogin(0L, "", request.getParameter("login"), request.getParameter("senha"), "", false,
+				"", "", "", "", "", "", "", "", "", "", "", "");
+		
 		String url = request.getParameter("url");
 		RequestDispatcher redireciona = null;
 		

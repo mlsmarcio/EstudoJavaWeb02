@@ -77,6 +77,16 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("users", usuarios);
 				request.setAttribute("msg", MSG.criar(TipoMSG.PRIMARY, Integer.toString(usuarios.size()), "Usuário(s) Listado(s)!"));
 				request.getRequestDispatcher("/principal/usuario.jsp").forward(request, response);
+			
+			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
+				idUser = request.getParameter("id");
+				
+				ModelLogin usuario = daoUsuarioRepository.consultaUsuarioId(Long.parseLong(idUser), super.getUserLogado(request));
+				if (usuario.getFotoUser() != null && !usuario.getFotoUser().isEmpty()) {
+					response.setHeader("Content-Disposition", "attachment;filename=arquivo." + usuario.getExtensaoFotoUser());
+					// REMOVE A STRING INICIAL QUE É NECESSÁRIA PARA EXIBIÇÃO NO OBJETO IMG. OBTÉM A STRING DA VÍRGULA EM DIANTE 
+					response.getOutputStream().write(new Base64().decodeBase64(usuario.getFotoUser().split("\\,")[1]));
+				}
 				
 			}else {
 				List<ModelLogin> usuarios = daoUsuarioRepository.buscarUsuarioList(super.getUserLogado(request));
@@ -111,8 +121,10 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			
 			ModelLogin usuario = new ModelLogin(id != null && !id.isEmpty() ? Long.parseLong(id) : 0L, 
 					request.getParameter("nome"), request.getParameter("login"), request.getParameter("senha"), 
-					request.getParameter("email"), request.getParameter("perfil"), request.getParameter("sexo"),
-					imagemBase64, extensaoFotoUser);
+					request.getParameter("email"), false, request.getParameter("perfil"), request.getParameter("sexo"),
+					imagemBase64, extensaoFotoUser, request.getParameter("cep"), request.getParameter("logradouro"), 
+					request.getParameter("numero"), request.getParameter("complemento"), request.getParameter("bairro"), 
+					request.getParameter("cidade"), request.getParameter("uf"), request.getParameter("ibge"));
 			
 			if (daoUsuarioRepository.existeLogin(usuario.getLogin()) && usuario.isNovo()) {
 				request.setAttribute("msg", MSG.criar(TipoMSG.DANGER, "Atenção", "Login já cadastrado!"));

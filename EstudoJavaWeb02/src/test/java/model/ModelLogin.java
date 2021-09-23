@@ -16,24 +16,109 @@ public class ModelLogin implements Serializable{
 	private String fotoUser;
 	private String extensaoFotoUser;
 	
+	private String cep;
+	private String logradouro;
+	private String numero;
+	private String complemento;
+	private String bairro;
+	private String cidade;
+	private String uf;
+	private String ibge;
+	
 	public ModelLogin() {
 	}
 	
-	public ModelLogin(Long id, String nome, String login, String senha, String email, String perfil, String sexo
-						, String fotoUser, String extensaoFotoUser) {
+	public ModelLogin(Long id, String nome, String login, String senha, String email, boolean userAdmin, String perfil,
+			String sexo, String fotoUser, String extensaoFotoUser, String cep, String logradouro, String numero,
+			String complemento, String bairro, String cidade, String uf, String ibge) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.login = login;
 		this.senha = senha;
 		this.email = email;
+		this.userAdmin = userAdmin;
 		this.perfil = perfil;
 		this.sexo = sexo;
 		this.fotoUser = fotoUser;
 		this.extensaoFotoUser = extensaoFotoUser;
+		
+		this.cep = cep;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.uf = uf;
+		this.ibge = ibge;
 	}
+
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
 	
-	
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getUf() {
+		return uf;
+	}
+
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+
+	public String getIbge() {
+		return ibge;
+	}
+
+	public void setIbge(String ibge) {
+		this.ibge = ibge;
+	}
+
 	public String getFotoUser() {
 		return fotoUser;
 	}

@@ -23,8 +23,9 @@ private Connection connection;
 		PreparedStatement preparedStatement = null;
 		
 		if (usuario.isNovo()) {
-			sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil, sexo, fotouser, extensaofoto) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil, sexo, fotouser, extensaofoto,"
+					+ " cep, logradouro, numero, complemento, bairro, cidade, uf, ibge) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, usuario.getLogin());
 			preparedStatement.setString(2, usuario.getSenha());
@@ -35,11 +36,21 @@ private Connection connection;
 			preparedStatement.setString(7, usuario.getSexo());
 			preparedStatement.setString(8, usuario.getFotoUser());
 			preparedStatement.setString(9, usuario.getExtensaoFotoUser());
+			
+			preparedStatement.setString(10, usuario.getCep());
+			preparedStatement.setString(11, usuario.getLogradouro());
+			preparedStatement.setString(12, usuario.getNumero());
+			preparedStatement.setString(13, usuario.getComplemento());
+			preparedStatement.setString(14, usuario.getBairro());
+			preparedStatement.setString(15, usuario.getCidade());
+			preparedStatement.setString(16, usuario.getUf());
+			preparedStatement.setString(17, usuario.getIbge());
 		
 		}else {
 			boolean atualizarFoto = (usuario.getFotoUser() != null && !usuario.getFotoUser().isEmpty());
 			
-			sql = "update model_login set nome = ?, email = ?, login = ?, senha = ?, perfil=?, sexo=?"
+			sql = "update model_login set nome=?, email=?, login=?, senha=?, perfil=?, sexo=?, "
+					+ " cep=?, logradouro=?, numero=?, complemento=?, bairro=?, cidade=?, uf=?, ibge=? "
 					+ (atualizarFoto ? ", fotouser=?, extensaofoto=?" : "")
 					+ " where id = ?;";
 			preparedStatement = connection.prepareStatement(sql);
@@ -50,13 +61,22 @@ private Connection connection;
 			preparedStatement.setString(5, usuario.getPerfil());
 			preparedStatement.setString(6, usuario.getSexo());
 			
+			preparedStatement.setString(7, usuario.getCep());
+			preparedStatement.setString(8, usuario.getLogradouro());
+			preparedStatement.setString(9, usuario.getNumero());
+			preparedStatement.setString(10, usuario.getComplemento());
+			preparedStatement.setString(11, usuario.getBairro());
+			preparedStatement.setString(12, usuario.getCidade());
+			preparedStatement.setString(13, usuario.getUf());
+			preparedStatement.setString(14, usuario.getIbge());
+			
 			if (atualizarFoto) {
-				preparedStatement.setString(7, usuario.getFotoUser());
-				preparedStatement.setString(8, usuario.getExtensaoFotoUser());
-				preparedStatement.setLong(9, usuario.getId());
+				preparedStatement.setString(15, usuario.getFotoUser());
+				preparedStatement.setString(16, usuario.getExtensaoFotoUser());
+				preparedStatement.setLong(17, usuario.getId());
 				
 			}else{
-				preparedStatement.setLong(7, usuario.getId());
+				preparedStatement.setLong(15, usuario.getId());
 			}
 		}
 		preparedStatement.execute();
@@ -82,6 +102,14 @@ private Connection connection;
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
 			usuario.setFotoUser(resultSet.getString("fotouser"));
+			usuario.setCep(resultSet.getString("cep"));
+			usuario.setLogradouro(resultSet.getString("logradouro"));
+			usuario.setNumero(resultSet.getString("numero"));
+			usuario.setComplemento(resultSet.getString("complemento"));
+			usuario.setBairro(resultSet.getString("bairro"));
+			usuario.setCidade(resultSet.getString("cidade"));
+			usuario.setUf(resultSet.getString("uf"));
+			usuario.setIbge(resultSet.getString("ibge"));
 		}
 		return usuario;
 	}
@@ -103,6 +131,16 @@ private Connection connection;
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
 			usuario.setFotoUser(resultSet.getString("fotouser"));
+			
+			usuario.setCep(resultSet.getString("cep"));
+			usuario.setLogradouro(resultSet.getString("logradouro"));
+			usuario.setNumero(resultSet.getString("numero"));
+			usuario.setComplemento(resultSet.getString("complemento"));
+			usuario.setBairro(resultSet.getString("bairro"));
+			usuario.setCidade(resultSet.getString("cidade"));
+			usuario.setUf(resultSet.getString("uf"));
+			usuario.setIbge(resultSet.getString("ibge"));
+			
 		}
 		return usuario;
 	}
@@ -125,6 +163,14 @@ private Connection connection;
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
 			usuario.setFotoUser(resultSet.getString("fotouser"));
+			usuario.setCep(resultSet.getString("cep"));
+			usuario.setLogradouro(resultSet.getString("logradouro"));
+			usuario.setNumero(resultSet.getString("numero"));
+			usuario.setComplemento(resultSet.getString("complemento"));
+			usuario.setBairro(resultSet.getString("bairro"));
+			usuario.setCidade(resultSet.getString("cidade"));
+			usuario.setUf(resultSet.getString("uf"));
+			usuario.setIbge(resultSet.getString("ibge"));
 		}
 		return usuario;
 	}
@@ -145,6 +191,15 @@ private Connection connection;
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
 			usuario.setFotoUser(resultSet.getString("fotouser"));
+			usuario.setExtensaoFotoUser(resultSet.getString("extensaofoto"));
+			usuario.setCep(resultSet.getString("cep"));
+			usuario.setLogradouro(resultSet.getString("logradouro"));
+			usuario.setNumero(resultSet.getString("numero"));
+			usuario.setComplemento(resultSet.getString("complemento"));
+			usuario.setBairro(resultSet.getString("bairro"));
+			usuario.setCidade(resultSet.getString("cidade"));
+			usuario.setUf(resultSet.getString("uf"));
+			usuario.setIbge(resultSet.getString("ibge"));
 		}
 		return usuario;
 	}
@@ -160,8 +215,12 @@ private Connection connection;
 		ResultSet resultSet= preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
-					"", resultSet.getString("email"), resultSet.getString("perfil"), resultSet.getString("sexo"),
-					resultSet.getString("fotouser"), resultSet.getString("extensaofoto"));
+					"", resultSet.getString("email"), resultSet.getBoolean("useradmin"), resultSet.getString("perfil"), 
+					resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
+					resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
+					resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
+					resultSet.getString("uf"), resultSet.getString("ibge"));
+			
 			listaUsuarios.add(usuario);
 		}
 		return listaUsuarios;
@@ -178,8 +237,12 @@ private Connection connection;
 		
 		while (resultSet.next()) {
 			usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
-					"", resultSet.getString("email"), resultSet.getString("perfil"), resultSet.getString("perfil"),
-					resultSet.getString("fotouser"), resultSet.getString("extensaofoto"));
+					"", resultSet.getString("email"), resultSet.getBoolean("useradmin"), resultSet.getString("perfil"), 
+					resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
+					resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
+					resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
+					resultSet.getString("uf"), resultSet.getString("ibge"));
+			
 			listaUsuarios.add(usuario);
 		}
 		return listaUsuarios;
