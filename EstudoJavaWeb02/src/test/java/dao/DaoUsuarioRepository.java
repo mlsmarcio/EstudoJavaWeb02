@@ -208,7 +208,7 @@ private Connection connection;
 		List<ModelLogin> listaUsuarios = new ArrayList<>();
 		
 		ModelLogin usuario = null;
-		String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id=?;";
+		String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id=? limit 5";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setString(1, "%" + nome + "%");
 		preparedStatement.setLong(2, usuarioLogado);
@@ -226,11 +226,35 @@ private Connection connection;
 		return listaUsuarios;
 	}
 
+	public List<ModelLogin> buscarUsuarioListPaginado(Long usuarioLogado, Integer offset) throws Exception {
+		List<ModelLogin> listaUsuarios = new ArrayList<>();
+		
+		ModelLogin usuario = null;
+		String sql = "select * from model_login WHERE useradmin is false and usuario_id = ? order by nome offset ? limit 5";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setLong(1, usuarioLogado);
+		preparedStatement.setInt(2, offset);
+		ResultSet resultSet= preparedStatement.executeQuery();
+		
+		while (resultSet.next()) {
+			usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
+					"", resultSet.getString("email"), resultSet.getBoolean("useradmin"), resultSet.getString("perfil"), 
+					resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
+					resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
+					resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
+					resultSet.getString("uf"), resultSet.getString("ibge"));
+			
+			listaUsuarios.add(usuario);
+		}
+		return listaUsuarios;
+	}
+
+	
 	public List<ModelLogin> buscarUsuarioList(Long usuarioLogado) throws Exception {
 		List<ModelLogin> listaUsuarios = new ArrayList<>();
 		
 		ModelLogin usuario = null;
-		String sql = "select * from model_login WHERE useradmin is false and usuario_id = ?";
+		String sql = "select * from model_login WHERE useradmin is false and usuario_id = ? limit 5";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setLong(1, usuarioLogado);
 		ResultSet resultSet= preparedStatement.executeQuery();
@@ -264,8 +288,29 @@ private Connection connection;
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setLong(1, idUser);
-		preparedStatement.executeUpdate();
+		
 		connection.commit();
+	}
+	
+	public int totalPagina(Long userLogado) throws SQLException, Exception {
+		String sql = "select count(1) as total from model_login where usuario_id = ? and id <> ?";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement = connection.prepareStatement(sql);
+		statement.setLong(1, userLogado);
+		statement.setLong(2, userLogado);
+		ResultSet resultSet= statement.executeQuery();
+		resultSet.next();
+		Double cadastros = resultSet.getDouble("total");
+		Double porpagina= 5.0;
+		Double pagina = cadastros / porpagina;
+		if (pagina != pagina.intValue()) {
+			pagina++;
+		}
+//		Double resto = pagina % 2;
+//		if (resto > 0) {
+//			pagina ++;
+//		}
+		return pagina.intValue();
 	}
 	
 }

@@ -231,6 +231,33 @@
 												</tbody>
 											</table>
 										</div>
+										
+										<nav aria-label="Page navigation example">
+										  <ul class="pagination justify-content-center">
+										    <li class="page-item">
+										      <a class="page-link" href="#" aria-label="Previous">
+										        <span aria-hidden="true">&laquo;</span>
+										        <span class="sr-only">Previous</span>
+										      </a>
+										    </li>
+										    <%
+										    	int totalPagina = (int) request.getAttribute("totalPagina");
+										    	for (int pagina = 0; pagina < totalPagina; pagina++){
+										    		String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (pagina * 5);
+										    		out.print("<li class=\"page-item\"><a class=\"page-link\" href=\"" +  url + "\">" + (pagina + 1) + "</a></li>");
+										    	}
+										    %>
+										    
+										    <li class="page-item">
+										      <a class="page-link" href="#" aria-label="Next">
+										        <span aria-hidden="true">&raquo;</span>
+										        <span class="sr-only">Next</span>
+										      </a>
+										    </li>
+										  </ul>
+										</nav>										
+										
+										
 									</div>
                                     <!-- Page-body end -->
                                 </div>
