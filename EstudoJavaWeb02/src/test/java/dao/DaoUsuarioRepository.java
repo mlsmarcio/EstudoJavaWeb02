@@ -288,7 +288,7 @@ private Connection connection;
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setLong(1, idUser);
-		
+		preparedStatement.execute();
 		connection.commit();
 	}
 	

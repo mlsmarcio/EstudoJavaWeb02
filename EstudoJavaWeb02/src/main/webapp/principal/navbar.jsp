@@ -54,8 +54,8 @@
                               </a>
                               <ul class="show-notification">
                                   <li>
-                                      <h6>Notifications</h6>
-                                      <label class="label label-danger">New</label>
+                                      <h6>Novidades</h6>
+                                      <label class="label label-danger">Novo</label>
                                   </li>
                                   <li class="waves-effect waves-light">
                                       <div class="media">
@@ -118,7 +118,7 @@
                                   </li>
                                   <li class="waves-effect waves-light">
                                       <a href="<%= request.getContextPath() %>/ServletLogin?acao=logout">
-                                          <i class="ti-layout-sidebar-left"></i> Logout
+                                          <i class="ti-layout-sidebar-left"></i> Sair
                                       </a>
                                   </li>
                               </ul>
