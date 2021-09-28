@@ -91,29 +91,29 @@
                           </li>
                           <li class="user-profile header-notification">
                               <a href="#!" class="waves-effect waves-light">
-                                  <img src="<%= request.getContextPath()%>/assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
+                                  
                                   <span>${usuario}</span>
                                   <i class="ti-angle-down"></i>
                               </a>
                               <ul class="show-notification profile-notification">
                                   <li class="waves-effect waves-light">
                                       <a href="#!">
-                                          <i class="ti-settings"></i> Settings
+                                          <i class="ti-settings"></i> Configurações
                                       </a>
                                   </li>
                                   <li class="waves-effect waves-light">
                                       <a href="user-profile.html">
-                                          <i class="ti-user"></i> Profile
+                                          <i class="ti-user"></i> Perfil
                                       </a>
                                   </li>
                                   <li class="waves-effect waves-light">
                                       <a href="email-inbox.html">
-                                          <i class="ti-email"></i> My Messages
+                                          <i class="ti-email"></i> Minhas Mensagens
                                       </a>
                                   </li>
                                   <li class="waves-effect waves-light">
                                       <a href="auth-lock-screen.html">
-                                          <i class="ti-lock"></i> Lock Screen
+                                          <i class="ti-lock"></i> Bloqueio da Tela
                                       </a>
                                   </li>
                                   <li class="waves-effect waves-light">

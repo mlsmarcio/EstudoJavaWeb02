@@ -7,7 +7,17 @@
                       <div class="pcoded-inner-navbar main-menu">
                           <div class="">
                               <div class="main-menu-header">
-                                  <img class="img-80 img-radius" src="<%= request.getContextPath()%>/assets/images/avatar-4.jpg" alt="User-Profile-Image">
+                                  	<!-- class="img-80 img-radius"  "d-flex align-self-center img-radius"-->
+										<c:if test="${user.fotoUser != '' && user.fotoUser != null}">
+											<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${user.id}">
+										    	<img class="main-menu-header img-radius" id="fotoembase64" alt="Imagem Usuário" src="${user.fotoUser}" width="70px">
+										    </a>
+										</c:if>
+										<c:if test="${user.fotoUser == '' || user.fotoUser == null}">
+										    <img class="main-menu-header img-radius" id="fotoembase64" alt="Imagem Usuário" src="resources/img/usuario.jpg" width="70px"> <!-- assets/images/avatar-1.jpg -->
+										</c:if>
+                                  
+                                  
                                   <div class="user-details">
                                       <span id="more-details">${usuario}<i class="fa fa-caret-down"></i></span>
                                   </div>
