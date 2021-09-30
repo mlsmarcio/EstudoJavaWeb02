@@ -232,30 +232,57 @@
 											</table>
 										</div>
 										
-										<nav aria-label="Page navigation example">
-										  <ul class="pagination justify-content-center">
-										    <li class="page-item">
-										      <a class="page-link" href="#" aria-label="Previous">
-										        <span aria-hidden="true">&laquo;</span>
-										        <span class="sr-only">Previous</span>
-										      </a>
-										    </li>
-										    <%
-										    	int totalPagina = (int) request.getAttribute("totalPagina");
-										    	for (int pagina = 0; pagina < totalPagina; pagina++){
-										    		String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (pagina * 5);
-										    		out.print("<li class=\"page-item\"><a class=\"page-link\" href=\"" +  url + "\">" + (pagina + 1) + "</a></li>");
-										    	}
-										    %>
-										    
-										    <li class="page-item">
-										      <a class="page-link" href="#" aria-label="Next">
-										        <span aria-hidden="true">&raquo;</span>
-										        <span class="sr-only">Next</span>
-										      </a>
-										    </li>
-										  </ul>
-										</nav>										
+<nav aria-label="...">
+  <ul class="pagination justify-content-center">
+    
+    
+<%
+    	int totalPagina = 0;
+		int paginaAtual = 0;
+		String url = "";
+		
+		//
+		if (request.getAttribute("totalPagina") != null){
+			totalPagina = (int) request.getAttribute("totalPagina");
+		}
+		if (request.getAttribute("paginaAtual") != null){
+			paginaAtual = (int) request.getAttribute("paginaAtual");
+		}
+		
+		//CONFIGURA O LINK [ANTERIOR]
+		url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (paginaAtual - 5);
+		if (paginaAtual == 0){
+			out.print("<li class='page-item disabled'>");
+		}else{
+			out.print("<li class='page-item'>");
+		}
+		out.print("  <a class='page-link' href=\"" +  url + "\" tabindex='-1'>Anterior</a>");
+		out.print("</li>");
+		
+    	//LINKS DAS PÁGINAS
+    	for (int pagina = 0; pagina < totalPagina; pagina++){
+    		url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (pagina * 5);
+    		if ((pagina * 5) == paginaAtual){
+    			out.print("<li class=\"page-item active\"><a class=\"page-link\" href=\"" +  url + "\">" + (pagina + 1) + "<span class=\"sr-only\">(atual)</span></a></li>");
+    		}else{
+    			out.print("<li class=\"page-item\"><a class=\"page-link\" href=\"" +  url + "\">" + (pagina + 1) + "</a></li>");
+    		}
+    	}
+    	
+    	//LINK PRÓXIMO
+    	url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (paginaAtual + 5);
+    	if (paginaAtual == (totalPagina -1) * 5){
+    		out.print("<li class=\"page-item disabled\">");
+    	}else{
+    		out.print("<li class=\"page-item\">");
+    	}
+    	out.print("  <a class='page-link' href=\"" +  url + "\" tabindex='-1'>Próximo</a>");
+		out.print("</li>");
+%>    
+  </ul>
+</nav>										
+										
+										
 										
 										
 									</div>

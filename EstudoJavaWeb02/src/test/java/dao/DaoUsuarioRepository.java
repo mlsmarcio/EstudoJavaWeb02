@@ -254,7 +254,7 @@ private Connection connection;
 		List<ModelLogin> listaUsuarios = new ArrayList<>();
 		
 		ModelLogin usuario = null;
-		String sql = "select * from model_login WHERE useradmin is false and usuario_id = ? limit 5";
+		String sql = "select * from model_login WHERE useradmin is false and usuario_id = ? order by nome limit 5";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setLong(1, usuarioLogado);
 		ResultSet resultSet= preparedStatement.executeQuery();

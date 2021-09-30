@@ -94,6 +94,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				Integer offset = Integer.parseInt(request.getParameter("pagina"));
 				List<ModelLogin> usuarios = daoUsuarioRepository.buscarUsuarioListPaginado(super.getUserLogado(request), offset);
 				request.setAttribute("users", usuarios);
+				request.setAttribute("paginaAtual", offset);
 				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("/principal/usuario.jsp").forward(request, response);
 				
