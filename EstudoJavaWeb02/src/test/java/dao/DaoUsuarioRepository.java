@@ -248,7 +248,47 @@ private Connection connection;
 		}
 		return listaUsuarios;
 	}
+	
+	public int consultaPaginaUsuarioPaginacao(String nome, Long userLogado) throws Exception {
+		String sql = "select count(1) as total from model_login WHERE upper(nome) like upper(?) and useradmin is false " + 
+				"and usuario_id = ?";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setString(1, "%" + nome + "%");
+		preparedStatement.setLong(2, userLogado);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		resultSet.next();
+		Double cadastros = resultSet.getDouble("total");
+		Double porpagina= 5.0;
+		Double pagina = cadastros / porpagina;
+		if (pagina != pagina.intValue()) {
+			pagina++;
+		}
+		return pagina.intValue();	
+	}
 
+	public List<ModelLogin> consultaPaginaUsuarioPaginacaoOffset(String nome, Long usuarioLogado, int offset) throws Exception {
+			List<ModelLogin> listaUsuarios = new ArrayList<>();
+			
+			ModelLogin usuario = null;
+			String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id=? offset ? limit 5";
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, "%" + nome + "%");
+			preparedStatement.setLong(2, usuarioLogado);
+			preparedStatement.setInt(3, offset);
+			ResultSet resultSet= preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
+						"", resultSet.getString("email"), resultSet.getBoolean("useradmin"), resultSet.getString("perfil"), 
+						resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
+						resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
+						resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
+						resultSet.getString("uf"), resultSet.getString("ibge"));
+				
+				listaUsuarios.add(usuario);
+			}
+			return listaUsuarios;
+	}
 	
 	public List<ModelLogin> buscarUsuarioList(Long usuarioLogado) throws Exception {
 		List<ModelLogin> listaUsuarios = new ArrayList<>();

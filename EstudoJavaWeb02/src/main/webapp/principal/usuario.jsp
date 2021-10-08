@@ -232,58 +232,56 @@
 											</table>
 										</div>
 										
-<nav aria-label="...">
-  <ul class="pagination justify-content-center">
-    
-    
-<%
-    	int totalPagina = 0;
-		int paginaAtual = 0;
-		String url = "";
-		
-		//
-		if (request.getAttribute("totalPagina") != null){
-			totalPagina = (int) request.getAttribute("totalPagina");
-		}
-		if (request.getAttribute("paginaAtual") != null){
-			paginaAtual = (int) request.getAttribute("paginaAtual");
-		}
-		
-		//CONFIGURA O LINK [ANTERIOR]
-		url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (paginaAtual - 5);
-		if (paginaAtual == 0){
-			out.print("<li class='page-item disabled'>");
-		}else{
-			out.print("<li class='page-item'>");
-		}
-		out.print("  <a class='page-link' href=\"" +  url + "\" tabindex='-1'>Anterior</a>");
-		out.print("</li>");
-		
-    	//LINKS DAS PÁGINAS
-    	for (int pagina = 0; pagina < totalPagina; pagina++){
-    		url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (pagina * 5);
-    		if ((pagina * 5) == paginaAtual){
-    			out.print("<li class=\"page-item active\"><a class=\"page-link\" href=\"" +  url + "\">" + (pagina + 1) + "<span class=\"sr-only\">(atual)</span></a></li>");
-    		}else{
-    			out.print("<li class=\"page-item\"><a class=\"page-link\" href=\"" +  url + "\">" + (pagina + 1) + "</a></li>");
-    		}
-    	}
-    	
-    	//LINK PRÓXIMO
-    	url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (paginaAtual + 5);
-    	if (paginaAtual == (totalPagina -1) * 5){
-    		out.print("<li class=\"page-item disabled\">");
-    	}else{
-    		out.print("<li class=\"page-item\">");
-    	}
-    	out.print("  <a class='page-link' href=\"" +  url + "\" tabindex='-1'>Próximo</a>");
-		out.print("</li>");
-%>    
-  </ul>
-</nav>										
-										
-										
-										
+
+										<nav aria-label="...">
+										  <ul class="pagination justify-content-center">
+										<%
+										    	int totalPagina = 0;
+												int paginaAtual = 0;
+												String url = "";
+												
+												//
+												if (request.getAttribute("totalPagina") != null){
+													totalPagina = (int) request.getAttribute("totalPagina");
+												}
+												if (request.getAttribute("paginaAtual") != null){
+													paginaAtual = (int) request.getAttribute("paginaAtual");
+												}
+												
+												//CONFIGURA O LINK [ANTERIOR]
+												url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (paginaAtual - 5);
+												if (paginaAtual == 0){
+													out.print("<li class='page-item disabled'>");
+												}else{
+													out.print("<li class='page-item'>");
+												}
+												out.print("  <a class='page-link' href=\"" +  url + "\" tabindex='-1'>Anterior</a>");
+												out.print("</li>");
+												
+										    	//LINKS DAS PÁGINAS
+										    	for (int pagina = 0; pagina < totalPagina; pagina++){
+										    		url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (pagina * 5);
+										    		
+										    		if ((pagina * 5) == paginaAtual){
+										    			out.print("<li class=\"page-item active\"><a class=\"page-link\" href=\"" +  url + "\">" + (pagina + 1) + 
+										    					"<span class=\"sr-only\">(atual)</span></a></li>");
+										    		} else {
+										    			out.print("<li class=\"page-item\"><a class=\"page-link\" href=\"" +  url + "\">" + (pagina + 1) + "</a></li>");
+										    		}
+										    	}
+										    	
+										    	//LINK PRÓXIMO
+										    	url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (paginaAtual + 5);
+										    	if (paginaAtual == (totalPagina -1) * 5){
+										    		out.print("<li class=\"page-item disabled\">");
+										    	}else{
+										    		out.print("<li class=\"page-item\">");
+										    	}
+										    	out.print("  <a class='page-link' href=\"" +  url + "\" tabindex='-1'>Próximo</a>");
+												out.print("</li>");
+										%>    
+										  </ul>
+										</nav>										
 										
 									</div>
                                     <!-- Page-body end -->
@@ -332,6 +330,13 @@
 				  </tbody>
 				</table>
 	        </div>
+	        
+	        <!-- PAGINAÇÃO -->
+	        <nav aria-label="Page navigation">
+	        	<ul class="pagination" id="ulPaginacaoUserAjax"></ul>
+	        </nav>
+	        
+	        <!-- EXIBE A QUANTIDADE DE ITENS RETORNADOS -->
 	        <span id="totalResultados"></span>
 	      </div>
 	      
@@ -343,9 +348,8 @@
 	  </div>
 	</div>    
     
-	<!--  VERIFICAR COMO FUNCIONA O SALVAR E RECUPERAR IMAGEM  -->
-	
 	<script type="text/javascript">
+	
 		function consultaCep(){
 			//Nova variável "cep" somente com dígitos.
 			let cep = $("#cep").val().replace(/\D/g, '');
@@ -401,7 +405,6 @@
                     alert("Formato de CEP inválido.");
                 }
             } //end if.
-			
 		}
 		
 		function visualizarImg(fotoembase64, fileFoto){
@@ -419,32 +422,79 @@
 			}else {
 				preview.src = '';
 			}
-			
 		}
 	
 		function verEditar(id){
 			var urlAction = document.getElementById('formUser').action;
 			window.location.href = urlAction + '?acao=buscarEditar&id=' + id;
 		}
-		
+
+		// Busca de Usuário via Ajax - Click no botão da Paginação
+		function buscaUserPagAjax(url){
+			let urlAction = document.getElementById('formUser').action;
+			
+			$.ajax({
+				method: "get",
+				url: urlAction,
+				data: url,
+				success: function(response, textStatus, xhr){
+					let json = JSON.parse(response);
+					
+					// VER NO CONSOLE DO NAVEGADOR
+					//console.info(json);
+					
+					// REMOVE AS LINHAS JÁ EXISTENTES 
+					$('#tblResultadoBusca > tbody > tr').remove();
+
+					// REMOVE OS BOTÕES DE NAVEGAÇÃO
+					$('#ulPaginacaoUserAjax > li').remove();
+					
+					// ADICIONA LINHAS PARA OS REGISTROS JSON
+					for (var p = 0; p < json.length; p++){
+						$('#tblResultadoBusca > tbody').append('<tr> <td>' + json[p].id + '</td>' +
+								'<td>' + json[p].nome + '</td> ' + 
+								'<td><button type="btton" onclick="verEditar(' + json[p].id +')" class="btn btn-info sm">Ver</button></td> </tr>');
+					} 
+					document.getElementById('totalResultados').textContent = ' Resultados: ' + json.length;
+
+					// RECUPERA O TOTAL DE PÁGINAS DO CABEÇALHO DA REQUISIÇÃO QUE FOI ENVIADO NO SERVLET
+					let totalPagina = xhr.getResponseHeader("totalPagina");
+					let nomeBusca = document.getElementById('nomeBusca').value;
+					
+					// MONTA A PAGINAÇÃO NO MODAL                 
+					for (var p = 0; p < totalPagina; p++){	            
+						let urlAjax = "nomeBusca=" + nomeBusca + "&acao=buscaUserAjaxPage&pagina=" + (p * 5);
+						$("#ulPaginacaoUserAjax").append("<li class=\"page-item\"><a  href=\"#\" class=\"page-link\" onclick=\"buscaUserPagAjax(" + urlAjax + ")\">" + (p +  1) + "</a></li>");
+					}
+				}
+				
+			}).fail(function(xhr, status, errorThrown){
+				alert('Erro ao buscar usuário por nome via Ajax: ' + xhr.responseText);
+			});				
+
+		}
+
+		// Busca usuáro e exibe no Modal - Click no botão BUSCAR
 		function buscarUsuario(){
 			var nomeBusca = document.getElementById('nomeBusca').value;
 			if (nomeBusca != null && nomeBusca.trim() != ''){
 				
-				var urlAction = document.getElementById('formUser').action;
+				let urlAction = document.getElementById('formUser').action;
 				$.ajax({
-					
 					method: "get",
 					url: urlAction,
 					data: "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
-					success: function(response){
-						var json = JSON.parse(response);
+					success: function(response, textStatus, xhr){
+						let json = JSON.parse(response);
 						
 						// VER NO CONSOLE DO NAVEGADOR
 						//console.info(json);
 						
 						// REMOVE AS LINHAS JÁ EXISTENTES 
 						$('#tblResultadoBusca > tbody > tr').remove();
+
+						// REMOVE OS BOTÕES DE NAVEGAÇÃO
+						$('#ulPaginacaoUserAjax > li').remove();
 						
 						// ADICIONA LINHAS PARA OS REGISTROS JSON
 						for (var p = 0; p < json.length; p++){
@@ -453,6 +503,16 @@
 									'<td><button type="btton" onclick="verEditar(' + json[p].id +')" class="btn btn-info sm">Ver</button></td> </tr>');
 						} 
 						document.getElementById('totalResultados').textContent = ' Resultados: ' + json.length;
+
+						// RECUPERA O TOTAL DE PÁGINAS DO CABEÇALHO DA REQUISIÇÃO QUE FOI ENVIADO NO SERVLET
+						let totalPagina = xhr.getResponseHeader("totalPagina");
+
+						// MONTA A PAGINAÇÃO NO MODAL                 
+						for (var p = 0; p < totalPagina; p++){
+							var url = "nomeBusca=\'" + nomeBusca + "\'&acao=buscaUserAjaxPage&pagina=" + (p*5);
+							$("#ulPaginacaoUserAjax").append("<li class=\"page-item\"><a href=\"#\" class=\"page-link\" onclick=\"buscaUserPagAjax(" + url + ")\">" + (p +  1) + "</a></li>");
+						}
+						
 					}
 					
 				}).fail(function(xhr, status, errorThrown){
