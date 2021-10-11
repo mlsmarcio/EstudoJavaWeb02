@@ -10,11 +10,11 @@ import java.util.List;
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
 
-public class DaoUsuarioRepository {
+public class DAOUsuarioRepository {
 
 private Connection connection;
 	
-	public DaoUsuarioRepository() {
+	public DAOUsuarioRepository() {
 		connection = SingleConnectionBanco.getConnection();
 	}
 	
@@ -174,6 +174,34 @@ private Connection connection;
 		}
 		return usuario;
 	}
+	public ModelLogin consultaUsuarioId(Long id) throws Exception {
+		ModelLogin usuario = new ModelLogin();
+		String sql = "select * from model_login where id = ? and useradmin is false;";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setLong(1, id);
+		ResultSet resultSet= preparedStatement.executeQuery();
+		if (resultSet.next()) {
+			usuario.setId(resultSet.getLong("id"));
+			usuario.setNome(resultSet.getString("nome"));
+			usuario.setEmail(resultSet.getString("email"));
+			usuario.setLogin(resultSet.getString("login"));
+			usuario.setSenha(resultSet.getString("senha"));
+			usuario.setPerfil(resultSet.getString("perfil"));
+			usuario.setSexo(resultSet.getString("sexo"));
+			usuario.setFotoUser(resultSet.getString("fotouser"));
+			usuario.setExtensaoFotoUser(resultSet.getString("extensaofoto"));
+			usuario.setCep(resultSet.getString("cep"));
+			usuario.setLogradouro(resultSet.getString("logradouro"));
+			usuario.setNumero(resultSet.getString("numero"));
+			usuario.setComplemento(resultSet.getString("complemento"));
+			usuario.setBairro(resultSet.getString("bairro"));
+			usuario.setCidade(resultSet.getString("cidade"));
+			usuario.setUf(resultSet.getString("uf"));
+			usuario.setIbge(resultSet.getString("ibge"));
+		}
+		return usuario;
+	}
+	
 
 	public ModelLogin consultaUsuarioId(Long id, Long usuarioLogado) throws Exception {
 		ModelLogin usuario = new ModelLogin();

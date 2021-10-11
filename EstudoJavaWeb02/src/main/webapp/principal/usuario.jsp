@@ -196,6 +196,9 @@
 												            <button class="btn btn-success waves-effect waves-light">Salvar</button>
 												            <button type="button" onclick="criarDelete();" class="btn btn-info waves-effect waves-light">Excluir</button>
                                                             <button type="button" onclick="criarDeleteAjax();" class="btn btn-info waves-effect waves-light">Excluir Com Ajax</button>
+                                                            <c:if test="${user.id > 0}">
+                                                            	<a href="<%= request.getContextPath() %>/ServletTelefoneController?idUser=${user.id}" class="btn btn-primary waves-effect waves-light">Telefone</a>
+                                                            </c:if>
                                                             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exemploModal">Pesquisar</button>
                                                         </form>
 				                                        

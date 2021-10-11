@@ -1,31 +1,33 @@
 package servlet;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 
-import dao.DaoUsuarioRepository;
+import dao.DAOUsuarioRepository;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import model.ModelLogin;
 
 public class ServletGenericUtil extends HttpServlet implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private DaoUsuarioRepository daoUsuarioRepository = new DaoUsuarioRepository();
+	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 	
-	public Long getUserLogado(HttpServletRequest request) {
+	public Long getUserLogado(HttpServletRequest request) throws Exception {
 		Long retorno= 0L;
 		
 		HttpSession session = request.getSession();
 		String usuarioLogado = (String) session.getAttribute("usuario");
-		try {
-			retorno = daoUsuarioRepository.consultaUsuarioLogado(usuarioLogado).getId();
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		retorno = daoUsuarioRepository.consultaUsuarioLogado(usuarioLogado).getId();
 		return retorno;
+	}
+
+	public ModelLogin getUserLogadoObject(HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		String usuarioLogado = (String) session.getAttribute("usuario");
+		return daoUsuarioRepository.consultaUsuarioLogado(usuarioLogado);
 	}
 
 }

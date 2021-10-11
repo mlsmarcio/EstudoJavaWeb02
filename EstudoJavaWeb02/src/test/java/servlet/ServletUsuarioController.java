@@ -10,7 +10,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dao.DaoUsuarioRepository;
+import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig; // prepara para o upload
@@ -28,7 +28,7 @@ import model.TipoMSG;
 public class ServletUsuarioController extends ServletGenericUtil {
 	private static final long serialVersionUID = 1L;
 	
-	private  DaoUsuarioRepository daoUsuarioRepository = new DaoUsuarioRepository();
+	private  DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 	
     public ServletUsuarioController() {
     }

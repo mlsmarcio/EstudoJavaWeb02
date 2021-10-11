@@ -3,7 +3,7 @@ package servlet;
 import java.io.IOException;
 
 import dao.DAOLoginRepository;
-import dao.DaoUsuarioRepository;
+import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,7 +22,7 @@ public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private DAOLoginRepository daoLoginRepository = new DAOLoginRepository();
-	private DaoUsuarioRepository daoUsuarioRepository =  new DaoUsuarioRepository();
+	private DAOUsuarioRepository daoUsuarioRepository =  new DAOUsuarioRepository();
 	
 	
     public ServletLogin() {
