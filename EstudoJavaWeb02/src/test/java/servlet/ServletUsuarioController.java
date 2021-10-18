@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
@@ -107,7 +109,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				}
 				
 			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("paginar")) {
-				Integer offset = Integer.parseInt(request.getParameter("pagina"));
+				Integer offset = Integer.parseInt(request.getParameter("registro"));
 				List<ModelLogin> usuarios = daoUsuarioRepository.buscarUsuarioListPaginado(super.getUserLogado(request), offset);
 				request.setAttribute("users", usuarios);
 				request.setAttribute("paginaAtual", offset);
@@ -145,12 +147,25 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				}
 			}
 			
+			String dataNascimentoStr = request.getParameter("dataNascimento");
+			Date dataNascimento = null;
+			if (dataNascimentoStr == null || !dataNascimentoStr.isEmpty()) {
+				dataNascimento = Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimentoStr)));
+			}			
+					
+			String rendaMensal = request.getParameter("rendamensal");
+			rendaMensal = rendaMensal.replaceAll("\\$","").replaceAll(" ", "").replaceAll("\\.", "").replaceAll("\\,", ".").replace("R", "");
+			if (rendaMensal.trim() == null || rendaMensal.isEmpty()) {
+				rendaMensal = "0.0";
+			}
+			
 			ModelLogin usuario = new ModelLogin(id != null && !id.isEmpty() ? Long.parseLong(id) : 0L, 
 					request.getParameter("nome"), request.getParameter("login"), request.getParameter("senha"), 
 					request.getParameter("email"), false, request.getParameter("perfil"), request.getParameter("sexo"),
 					imagemBase64, extensaoFotoUser, request.getParameter("cep"), request.getParameter("logradouro"), 
 					request.getParameter("numero"), request.getParameter("complemento"), request.getParameter("bairro"), 
-					request.getParameter("cidade"), request.getParameter("uf"), request.getParameter("ibge"));
+					request.getParameter("cidade"), request.getParameter("uf"), request.getParameter("ibge"), 
+					dataNascimento, Double.parseDouble(rendaMensal));
 			
 			if (daoUsuarioRepository.existeLogin(usuario.getLogin()) && usuario.isNovo()) {
 				request.setAttribute("msg", MSG.criar(TipoMSG.DANGER, "Atenção", "Login já cadastrado!"));

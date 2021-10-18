@@ -75,5 +75,101 @@ WITH (
 ALTER TABLE public.model_login
   OWNER TO postgres;
 
+=========================================================================================
+-- Table: public.model_login
+
+-- DROP TABLE public.model_login;
+
+CREATE TABLE public.model_login
+(
+  login character varying(200) NOT NULL,
+  senha character varying(200) NOT NULL,
+  id integer NOT NULL DEFAULT nextval('model_login_id_seq'::regclass),
+  nome character varying(300) NOT NULL,
+  email character varying(300),
+  useradmin boolean NOT NULL DEFAULT false,
+  usuario_id bigint NOT NULL DEFAULT 1,
+  perfil character varying(50),
+  sexo character varying(10),
+  fotouser text,
+  extensaofoto character varying(10),
+  cep character varying(15),
+  logradouro character varying(100),
+  numero character varying(45),
+  complemento character varying(100),
+  bairro character varying(100),
+  cidade character varying(100),
+  uf character varying(30),
+  ibge character varying(25),
+  CONSTRAINT model_login_pkey PRIMARY KEY (id),
+  CONSTRAINT usuario_fk FOREIGN KEY (usuario_id)
+      REFERENCES public.model_login (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT login_unique UNIQUE (login)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.model_login
+  OWNER TO postgres;
+  
+
+CREATE TABLE public.telefone
+(
+  id integer NOT NULL DEFAULT nextval('telefone_seq'::regclass),
+  numero character varying(50) NOT NULL,
+  usuario_id bigint NOT NULL,
+  usuario_cad_id bigint NOT NULL,
+  CONSTRAINT telefone_pkey PRIMARY KEY (id),
+  CONSTRAINT usuario_cad_fk FOREIGN KEY (usuario_cad_id)
+      REFERENCES public.model_login (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT usuario_fk FOREIGN KEY (usuario_id)
+      REFERENCES public.model_login (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.telefone
+  OWNER TO postgres;
+  
+
+17/10/2021
+CREATE TABLE public.model_login
+(
+  login character varying(200) NOT NULL,
+  senha character varying(200) NOT NULL,
+  id integer NOT NULL DEFAULT nextval('model_login_id_seq'::regclass),
+  nome character varying(300) NOT NULL,
+  email character varying(300),
+  useradmin boolean NOT NULL DEFAULT false,
+  usuario_id bigint NOT NULL DEFAULT 1,
+  perfil character varying(50),
+  sexo character varying(10),
+  fotouser text,
+  extensaofoto character varying(10),
+  cep character varying(15),
+  logradouro character varying(100),
+  numero character varying(45),
+  complemento character varying(100),
+  bairro character varying(100),
+  cidade character varying(100),
+  uf character varying(30),
+  ibge character varying(25),
+  datanascimento date,
+  rendamensal double precision,
+  CONSTRAINT model_login_pkey PRIMARY KEY (id),
+  CONSTRAINT usuario_fk FOREIGN KEY (usuario_id)
+      REFERENCES public.model_login (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT login_unique UNIQUE (login)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.model_login
+  OWNER TO postgres;
+  
 
       

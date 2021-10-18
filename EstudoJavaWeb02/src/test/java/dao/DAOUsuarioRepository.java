@@ -24,8 +24,8 @@ private Connection connection;
 		
 		if (usuario.isNovo()) {
 			sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil, sexo, fotouser, extensaofoto,"
-					+ " cep, logradouro, numero, complemento, bairro, cidade, uf, ibge) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ " cep, logradouro, numero, complemento, bairro, cidade, uf, ibge, datanascimento, rendamensal) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, usuario.getLogin());
 			preparedStatement.setString(2, usuario.getSenha());
@@ -45,12 +45,16 @@ private Connection connection;
 			preparedStatement.setString(15, usuario.getCidade());
 			preparedStatement.setString(16, usuario.getUf());
 			preparedStatement.setString(17, usuario.getIbge());
+			
+			preparedStatement.setDate(18, usuario.getDataNascimento());
+			preparedStatement.setDouble(19, usuario.getRendamensal());
 		
 		}else {
 			boolean atualizarFoto = (usuario.getFotoUser() != null && !usuario.getFotoUser().isEmpty());
 			
 			sql = "update model_login set nome=?, email=?, login=?, senha=?, perfil=?, sexo=?, "
-					+ " cep=?, logradouro=?, numero=?, complemento=?, bairro=?, cidade=?, uf=?, ibge=? "
+					+ " cep=?, logradouro=?, numero=?, complemento=?, bairro=?, cidade=?, uf=?, ibge=?, "
+					+ "datanascimento=?, rendamensal=? "
 					+ (atualizarFoto ? ", fotouser=?, extensaofoto=?" : "")
 					+ " where id = ?;";
 			preparedStatement = connection.prepareStatement(sql);
@@ -69,14 +73,16 @@ private Connection connection;
 			preparedStatement.setString(12, usuario.getCidade());
 			preparedStatement.setString(13, usuario.getUf());
 			preparedStatement.setString(14, usuario.getIbge());
+			preparedStatement.setDate(15, usuario.getDataNascimento());
+			preparedStatement.setDouble(16, usuario.getRendamensal());
 			
 			if (atualizarFoto) {
-				preparedStatement.setString(15, usuario.getFotoUser());
-				preparedStatement.setString(16, usuario.getExtensaoFotoUser());
-				preparedStatement.setLong(17, usuario.getId());
+				preparedStatement.setString(17, usuario.getFotoUser());
+				preparedStatement.setString(18, usuario.getExtensaoFotoUser());
+				preparedStatement.setLong(19, usuario.getId());
 				
 			}else{
-				preparedStatement.setLong(15, usuario.getId());
+				preparedStatement.setLong(17, usuario.getId());
 			}
 		}
 		preparedStatement.execute();
@@ -102,6 +108,9 @@ private Connection connection;
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
 			usuario.setFotoUser(resultSet.getString("fotouser"));
+			usuario.setDataNascimento(resultSet.getDate("datanascimento"));
+			usuario.setRendamensal(resultSet.getDouble("rendamensal"));
+			
 			usuario.setCep(resultSet.getString("cep"));
 			usuario.setLogradouro(resultSet.getString("logradouro"));
 			usuario.setNumero(resultSet.getString("numero"));
@@ -131,6 +140,8 @@ private Connection connection;
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
 			usuario.setFotoUser(resultSet.getString("fotouser"));
+			usuario.setDataNascimento(resultSet.getDate("datanascimento"));
+			usuario.setRendamensal(resultSet.getDouble("rendamensal"));
 			
 			usuario.setCep(resultSet.getString("cep"));
 			usuario.setLogradouro(resultSet.getString("logradouro"));
@@ -163,6 +174,9 @@ private Connection connection;
 			usuario.setPerfil(resultSet.getString("perfil"));
 			usuario.setSexo(resultSet.getString("sexo"));
 			usuario.setFotoUser(resultSet.getString("fotouser"));
+			usuario.setDataNascimento(resultSet.getDate("datanascimento"));
+			usuario.setRendamensal(resultSet.getDouble("rendamensal"));
+			
 			usuario.setCep(resultSet.getString("cep"));
 			usuario.setLogradouro(resultSet.getString("logradouro"));
 			usuario.setNumero(resultSet.getString("numero"));
@@ -190,6 +204,9 @@ private Connection connection;
 			usuario.setSexo(resultSet.getString("sexo"));
 			usuario.setFotoUser(resultSet.getString("fotouser"));
 			usuario.setExtensaoFotoUser(resultSet.getString("extensaofoto"));
+			usuario.setDataNascimento(resultSet.getDate("datanascimento"));
+			usuario.setRendamensal(resultSet.getDouble("rendamensal"));
+			
 			usuario.setCep(resultSet.getString("cep"));
 			usuario.setLogradouro(resultSet.getString("logradouro"));
 			usuario.setNumero(resultSet.getString("numero"));
@@ -220,6 +237,9 @@ private Connection connection;
 			usuario.setSexo(resultSet.getString("sexo"));
 			usuario.setFotoUser(resultSet.getString("fotouser"));
 			usuario.setExtensaoFotoUser(resultSet.getString("extensaofoto"));
+			usuario.setDataNascimento(resultSet.getDate("datanascimento"));
+			usuario.setRendamensal(resultSet.getDouble("rendamensal"));
+			
 			usuario.setCep(resultSet.getString("cep"));
 			usuario.setLogradouro(resultSet.getString("logradouro"));
 			usuario.setNumero(resultSet.getString("numero"));
@@ -236,7 +256,7 @@ private Connection connection;
 		List<ModelLogin> listaUsuarios = new ArrayList<>();
 		
 		ModelLogin usuario = null;
-		String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id=? limit 5";
+		String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id=? order by nome limit 5";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setString(1, "%" + nome + "%");
 		preparedStatement.setLong(2, usuarioLogado);
@@ -247,7 +267,8 @@ private Connection connection;
 					resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
 					resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
 					resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
-					resultSet.getString("uf"), resultSet.getString("ibge"));
+					resultSet.getString("uf"), resultSet.getString("ibge"), resultSet.getDate("datanascimento"),
+					resultSet.getDouble("rendamensal"));
 			
 			listaUsuarios.add(usuario);
 		}
@@ -270,7 +291,8 @@ private Connection connection;
 					resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
 					resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
 					resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
-					resultSet.getString("uf"), resultSet.getString("ibge"));
+					resultSet.getString("uf"), resultSet.getString("ibge"), resultSet.getDate("datanascimento"),
+					resultSet.getDouble("rendamensal"));
 			
 			listaUsuarios.add(usuario);
 		}
@@ -299,7 +321,7 @@ private Connection connection;
 			List<ModelLogin> listaUsuarios = new ArrayList<>();
 			
 			ModelLogin usuario = null;
-			String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id=? offset ? limit 5";
+			String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id=? order by nome offset ? limit 5";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, "%" + nome + "%");
 			preparedStatement.setLong(2, usuarioLogado);
@@ -311,7 +333,8 @@ private Connection connection;
 						resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
 						resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
 						resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
-						resultSet.getString("uf"), resultSet.getString("ibge"));
+						resultSet.getString("uf"), resultSet.getString("ibge"), resultSet.getDate("datanascimento"),
+						resultSet.getDouble("rendamensal"));
 				
 				listaUsuarios.add(usuario);
 			}
@@ -333,7 +356,8 @@ private Connection connection;
 					resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
 					resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
 					resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
-					resultSet.getString("uf"), resultSet.getString("ibge"));
+					resultSet.getString("uf"), resultSet.getString("ibge"), resultSet.getDate("datanascimento"),
+					resultSet.getDouble("rendamensal"));
 			
 			listaUsuarios.add(usuario);
 		}

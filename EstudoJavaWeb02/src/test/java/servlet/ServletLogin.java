@@ -52,7 +52,7 @@ public class ServletLogin extends HttpServlet {
 //		resultSet.getString("uf"), resultSet.getString("ibge"));			
 		
 		ModelLogin modelLogin = new ModelLogin(0L, "", request.getParameter("login"), request.getParameter("senha"), "", false,
-				"", "", "", "", "", "", "", "", "", "", "", "");
+				"", "", "", "", "", "", "", "", "", "", "", "", null, 0.0);
 		
 		String url = request.getParameter("url");
 		RequestDispatcher redireciona = null;

@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class ModelLogin implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -15,6 +16,8 @@ public class ModelLogin implements Serializable{
 	private String sexo;
 	private String fotoUser;
 	private String extensaoFotoUser;
+	private Date dataNascimento;
+	private Double rendamensal;
 	
 	private String cep;
 	private String logradouro;
@@ -30,7 +33,7 @@ public class ModelLogin implements Serializable{
 	
 	public ModelLogin(Long id, String nome, String login, String senha, String email, boolean userAdmin, String perfil,
 			String sexo, String fotoUser, String extensaoFotoUser, String cep, String logradouro, String numero,
-			String complemento, String bairro, String cidade, String uf, String ibge) {
+			String complemento, String bairro, String cidade, String uf, String ibge, Date dataNascimento, Double rendamensal) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -42,6 +45,8 @@ public class ModelLogin implements Serializable{
 		this.sexo = sexo;
 		this.fotoUser = fotoUser;
 		this.extensaoFotoUser = extensaoFotoUser;
+		this.dataNascimento = dataNascimento;
+		this.rendamensal = rendamensal;
 		
 		this.cep = cep;
 		this.logradouro = logradouro;
@@ -53,7 +58,20 @@ public class ModelLogin implements Serializable{
 		this.ibge = ibge;
 	}
 
-
+	public void setRendamensal(Double rendamensal) {
+		this.rendamensal = rendamensal;
+	}
+	public Double getRendamensal() {
+		return rendamensal;
+	}
+	
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+	
 	public String getCep() {
 		return cep;
 	}

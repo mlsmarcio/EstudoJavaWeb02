@@ -79,18 +79,23 @@
 																		class="form-control-file" style="margin: 15px; margin-left: 5px;">
 	                                                            </div>
                                                             
-	                                                            <div class="form-group col-md-6 form-default form-static-label">
+	                                                            <div class="form-group col-md-5 form-default form-static-label">
 	                                                                <input type="text" name="nome" id="nome" class="form-control" required value="${user.nome}" autocomplete="off" autofocus>
 	                                                                <span class="form-bar"></span>
 	                                                                <label class="float-label">Nome:</label>
 	                                                            </div>
-	                                                            <div class="form-group  col-md-6 form-default form-static-label">
+	                                                            <div class="form-group  col-md-5 form-default form-static-label">
 	                                                                <input type="email" name="email" id="email" class="form-control" required autocomplete="off" value="${user.email}">
 	                                                                <span class="form-bar"></span>
 	                                                                <label class="float-label">Email:</label>
 	                                                            </div>
+	                                                            <div class="form-group  col-md-2 form-default form-static-label">
+	                                                                <input type="text" name="rendamensal" id="rendamensal" class="form-control" required autocomplete="off" value="${user.rendamensal}">
+	                                                                <span class="form-bar"></span>
+	                                                                <label class="float-label">Renda Mensal:</label>
+	                                                            </div>
 	                                                            
-	                                                            <div class="form-group col-md-12 form-default form-static-label">
+	                                                            <div class="form-group col-md-6 form-default form-static-label">
 																	<select class="form-control" aria-label="Default select example" name="perfil" id="perfil">
 																	  <option disabled ${user.perfil == '' || user.perfil == null ? 'selected' :''}>Selecione o Perfil</option>
 																	  <option value="ADMIN" ${user.perfil == 'ADMIN' ? 'selected' :''}>Administrador</option>
@@ -99,6 +104,11 @@
 																	</select>
 																	<span class="form-bar"></span>
 	                                                                <label class="float-label">Perfil:</label>
+	                                                            </div>
+	                                                            <div class="form-group col-md-6 form-default form-static-label">
+	                                                                <input type="text" name="dataNascimento" id="dataNascimento" class="form-control" required autocomplete="off" value="${user.dataNascimento}">
+	                                                                <span class="form-bar"></span>
+	                                                                <label class="float-label">Dat. Nascimento:</label>
 	                                                            </div>
                                                             
 															
@@ -235,7 +245,7 @@
 											</table>
 										</div>
 										
-
+										<!-- PAGINAÇÃO -->
 										<nav aria-label="...">
 										  <ul class="pagination justify-content-center">
 										<%
@@ -252,7 +262,7 @@
 												}
 												
 												//CONFIGURA O LINK [ANTERIOR]
-												url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (paginaAtual - 5);
+												url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&registro=" + (paginaAtual - 5);
 												if (paginaAtual == 0){
 													out.print("<li class='page-item disabled'>");
 												}else{
@@ -263,7 +273,7 @@
 												
 										    	//LINKS DAS PÁGINAS
 										    	for (int pagina = 0; pagina < totalPagina; pagina++){
-										    		url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (pagina * 5);
+										    		url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&registro=" + (pagina * 5);
 										    		
 										    		if ((pagina * 5) == paginaAtual){
 										    			out.print("<li class=\"page-item active\"><a class=\"page-link\" href=\"" +  url + "\">" + (pagina + 1) + 
@@ -274,7 +284,7 @@
 										    	}
 										    	
 										    	//LINK PRÓXIMO
-										    	url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (paginaAtual + 5);
+										    	url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&registro=" + (paginaAtual + 5);
 										    	if (paginaAtual == (totalPagina -1) * 5){
 										    		out.print("<li class=\"page-item disabled\">");
 										    	}else{
@@ -334,7 +344,7 @@
 				</table>
 	        </div>
 	        
-	        <!-- PAGINAÇÃO -->
+	        <!-- PAGINAÇÃO NO MODAL -->
 	        <nav aria-label="Page navigation">
 	        	<ul class="pagination" id="ulPaginacaoUserAjax"></ul>
 	        </nav>
@@ -349,16 +359,51 @@
 	      </div>
 	    </div>
 	  </div>
-	</div>    
+	</div> <!-- FIM - MODAL -->    
+    
     
 	<script type="text/javascript">
-	
+		// FORMATA O CAMPO MONETÁRIO
+		$("#rendamensal").maskMoney({showSymbol : true, symbol : "R$ ", decimal : ",", thousands : "."});
+		const formatter = new Intl.NumberFormat('pt-BR', {currency : 'BRL',	minimumFractionDigits : 2});
+		$("#rendamensal").val("R$ " + formatter.format($("#rendamensal").val()));
+		//--
+		
+		// FORMATA A DATA 
+		let dataNascimento = $("#dataNascimento").val();
+		let dateFormat = new Date(dataNascimento);
+		$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR', {timeZone: 'UTC'}));
+		
+		// DATA DE NASCIMENTO
+		$( function() {
+			  $("#dataNascimento").datepicker({
+				    dateFormat: 'dd/mm/yy',
+				    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+				    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+				    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+				    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+				    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+				    nextText: 'Próximo',
+				    prevText: 'Anterior',
+				    showAnim: 'clip', 
+			        changeMonth: true,
+				    changeYear: true
+				});
+		} );
+
+		// CAMPOS QUE RECEBEM APENAS NÚMEROS
+		$("#numero").keypress(function (event) {
+			return /\d/.test(String.fromCharCode(event.keyCode));
+		});
+
+		// EXIBE O ENDEREÇO AO DEIXAR O CAMPO CEP
 		function consultaCep(){
 			//Nova variável "cep" somente com dígitos.
 			let cep = $("#cep").val().replace(/\D/g, '');
+			let logradouro = $("#logradouro").val();
 
             //Verifica se campo cep possui valor informado.
-            if (cep != "") {
+            if (cep != "" && logradouro == "") {
 
                 //Expressão regular para validar o CEP.
                 var validacep = /^[0-9]{8}$/;
@@ -409,7 +454,8 @@
                 }
             } //end if.
 		}
-		
+
+		// EXIBE A FOTO AO SELECIONAR O ARQUIVO
 		function visualizarImg(fotoembase64, fileFoto){
 			let preview = document.getElementById(fotoembase64);
 			let fileUser = document.getElementById(fileFoto).files[0];
@@ -426,7 +472,8 @@
 				preview.src = '';
 			}
 		}
-	
+
+		// LISTA O USUÁRIO PARA EDIÇÃO
 		function verEditar(id){
 			var urlAction = document.getElementById('formUser').action;
 			window.location.href = urlAction + '?acao=buscarEditar&id=' + id;
@@ -464,10 +511,13 @@
 					let totalPagina = xhr.getResponseHeader("totalPagina");
 					let nomeBusca = document.getElementById('nomeBusca').value;
 					
-					// MONTA A PAGINAÇÃO NO MODAL                 
+					// MONTA A PAGINAÇÃO NO MODAL
+					let urlAjax = "";
+					let strHtml = "";                 
 					for (var p = 0; p < totalPagina; p++){	            
-						let urlAjax = "nomeBusca=" + nomeBusca + "&acao=buscaUserAjaxPage&pagina=" + (p * 5);
-						$("#ulPaginacaoUserAjax").append("<li class=\"page-item\"><a  href=\"#\" class=\"page-link\" onclick=\"buscaUserPagAjax(" + urlAjax + ")\">" + (p +  1) + "</a></li>");
+						urlAjax = "nomeBusca=" + nomeBusca + "&acao=buscaUserAjaxPage&pagina=" + (p * 5);
+						strHtml = "<li class=\"page-item\"><a href=\"#\" class=\"page-link\" onclick=\"buscaUserPagAjax('" + urlAjax + "')\">" + (p +  1) + "</a></li>";
+						$("#ulPaginacaoUserAjax").append(strHtml);
 					}
 				}
 				
@@ -477,7 +527,7 @@
 
 		}
 
-		// Busca usuáro e exibe no Modal - Click no botão BUSCAR
+		// Busca usuários e exibe no Modal - Click no botão BUSCAR
 		function buscarUsuario(){
 			var nomeBusca = document.getElementById('nomeBusca').value;
 			if (nomeBusca != null && nomeBusca.trim() != ''){
@@ -509,11 +559,14 @@
 
 						// RECUPERA O TOTAL DE PÁGINAS DO CABEÇALHO DA REQUISIÇÃO QUE FOI ENVIADO NO SERVLET
 						let totalPagina = xhr.getResponseHeader("totalPagina");
-
-						// MONTA A PAGINAÇÃO NO MODAL                 
+						
+						// MONTA A PAGINAÇÃO NO MODAL
+						let url = "";
+						let strHtml = "";
 						for (var p = 0; p < totalPagina; p++){
-							var url = "nomeBusca=\'" + nomeBusca + "\'&acao=buscaUserAjaxPage&pagina=" + (p*5);
-							$("#ulPaginacaoUserAjax").append("<li class=\"page-item\"><a href=\"#\" class=\"page-link\" onclick=\"buscaUserPagAjax(" + url + ")\">" + (p +  1) + "</a></li>");
+							url = "nomeBusca=" + nomeBusca + "&acao=buscaUserAjaxPage&pagina=" + (p*5) ;
+							strHtml = "<li class=\"page-item\"> <a href=\"#\" class=\"page-link\" onclick=\"buscaUserPagAjax('" + url + "')\">" + (p + 1) + "</a></li>";
+							$("#ulPaginacaoUserAjax").append(strHtml);
 						}
 						
 					}
@@ -523,7 +576,8 @@
 				});				
 			}
 		}
-		
+
+		// EXCLUSÃO DE REGISTROS
 		function criarDeleteAjax(){
 			if (document.getElementById("id").value <= 0){
 				alert("Nenhum usuário selecionado!");
@@ -549,7 +603,7 @@
 			}
 		}
 		
-	
+		// CONFIRMAÇÃO PARA DELETAR
 		function criarDelete(){
 			if (document.getElementById("id").value <= 0){
 				alert("Nenhum usuário selecionado!");
