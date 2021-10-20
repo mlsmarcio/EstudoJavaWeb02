@@ -369,10 +369,12 @@
 		$("#rendamensal").val("R$ " + formatter.format($("#rendamensal").val()));
 		//--
 		
-		// FORMATA A DATA 
-		let dataNascimento = $("#dataNascimento").val();
-		let dateFormat = new Date(dataNascimento);
-		$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR', {timeZone: 'UTC'}));
+		// FORMATA A DATA
+		if ($("#dataNascimento").val() != null) {
+			let dataNascimento = $("#dataNascimento").val();
+			let dateFormat = new Date(dataNascimento);
+	    	$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR', {timeZone: 'UTC'}));
+    	}
 		
 		// DATA DE NASCIMENTO
 		$( function() {
@@ -617,10 +619,12 @@
 		}
 	
 		function limpaForm(){
-			var elementos = document.getElementById("formUser").elements;
+			let elementos = document.getElementById("formUser").elements;
 			for (let x in elementos){
 				elementos[x].value='';
 			}
+			let preview = document.getElementById('fotoembase64');
+			preview.src='';			
 			document.getElementById("nome").focus();
 		}
 		

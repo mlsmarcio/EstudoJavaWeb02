@@ -8,18 +8,18 @@
                           <div class="">
                               <div class="main-menu-header">
                                   	<!-- class="img-80 img-radius"  "d-flex align-self-center img-radius"-->
-										<c:if test="${user.fotoUser != '' && user.fotoUser != null}">
-											<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${user.id}">
-										    	<img class="main-menu-header img-radius" id="fotoembase64" alt="Imagem Usuário" src="${user.fotoUser}" width="70px">
+										<c:if test="${usuario.fotoUser != '' && usuario.fotoUser != null}">
+											<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${usuario.id}">
+										    	<img class="main-menu-header img-radius" id="fotoAdmEmbase64" alt="Imagem Usuário" src="${usuario.fotoUser}" width="70px">
 										    </a>
 										</c:if>
-										<c:if test="${user.fotoUser == '' || user.fotoUser == null}">
-										    <img class="main-menu-header img-radius" id="fotoembase64" alt="Imagem Usuário" src="resources/img/usuario.jpg" width="70px"> <!-- assets/images/avatar-1.jpg -->
+										<c:if test="${usuario.fotoUser == '' || usuario.fotoUser == null}">
+										    <img class="main-menu-header img-radius" id="fotoAdmEmbase64" alt="Imagem Usuário" src="resources/img/usuario.jpg" width="70px"> <!-- assets/images/avatar-1.jpg -->
 										</c:if>
                                   
                                   
                                   <div class="user-details">
-                                      <span id="more-details">${usuario}<i class="fa fa-caret-down"></i></span>
+                                      <span id="more-details">${usuario.login}<i class="fa fa-caret-down"></i></span>
                                   </div>
                               </div>
         
@@ -63,7 +63,7 @@
                                   </a>
                                   <ul class="pcoded-submenu">
                                   
-                               		<c:if test="${perfil == 'ADMIN'}">
+                               		<c:if test="${usuario.perfil == 'ADMIN'}">
                                       <li class=" ">
                                           <a href="<%= request.getContextPath() %>/ServletUsuarioController?acao=listarUser" class="waves-effect waves-dark">
                                               <span class="pcoded-micon"><i class="ti-angle-right"></i></span>

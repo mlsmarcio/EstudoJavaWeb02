@@ -149,7 +149,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			
 			String dataNascimentoStr = request.getParameter("dataNascimento");
 			Date dataNascimento = null;
-			if (dataNascimentoStr == null || !dataNascimentoStr.isEmpty()) {
+			if (dataNascimentoStr != null && !dataNascimentoStr.isEmpty()) {
 				dataNascimento = Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimentoStr)));
 			}			
 					

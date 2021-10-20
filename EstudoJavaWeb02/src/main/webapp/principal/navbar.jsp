@@ -61,7 +61,7 @@
                                       <div class="media">
                                           <img class="d-flex align-self-center img-radius" src="<%= request.getContextPath()%>/assets/images/avatar-2.jpg" alt="Generic placeholder image">
                                           <div class="media-body">
-                                              <h5 class="notification-user">${usuario}</h5>
+                                              <h5 class="notification-user">${usuario.login}</h5>
                                               <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
                                               <span class="notification-time">30 minutes ago</span>
                                           </div>
@@ -92,7 +92,7 @@
                           <li class="user-profile header-notification">
                               <a href="#!" class="waves-effect waves-light">
                                   
-                                  <span>${usuario}</span>
+                                  <span>${usuario.login}</span>
                                   <i class="ti-angle-down"></i>
                               </a>
                               <ul class="show-notification profile-notification">

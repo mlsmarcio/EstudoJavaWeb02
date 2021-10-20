@@ -34,6 +34,7 @@ public class ServletTelefoneController extends ServletGenericUtil {
 				daoTelefoneRepository.deleteFone(Long.parseLong(idFone));
 				request.setAttribute("msg", MSG.criar(TipoMSG.PRIMARY, "Concluido", "Excluído com Sucesso!"));
 			}
+			
 			String idUser = request.getParameter("idUser");
 			
 			if (idUser != null && !idUser.isEmpty()) {
@@ -58,20 +59,27 @@ public class ServletTelefoneController extends ServletGenericUtil {
 		try {
 			String usuario_id = request.getParameter("id");
 			String numeroTelefone = request.getParameter("numero");
+			//String idUser = request.getParameter("idUser");
 			
 			ModelTelefone modelTelefone = new ModelTelefone();
 			modelTelefone.setNumero(numeroTelefone);
 			
 			modelTelefone.setUsuario_id(daoUsuarioRepository.consultaUsuarioId(Long.parseLong(usuario_id)));
 			modelTelefone.setUsuario_cad(super.getUserLogadoObject(request));
-			daoTelefoneRepository.gravaTelefone(modelTelefone);
+			
+			if (!daoTelefoneRepository.existeFone(numeroTelefone, Long.parseLong(usuario_id))) {
+				daoTelefoneRepository.gravaTelefone(modelTelefone);
+				request.setAttribute("msg", MSG.criar(TipoMSG.PRIMARY, "Concluido", "Salvo com Sucesso!"));
+				
+			} else {
+				request.setAttribute("msg", MSG.criar(TipoMSG.DANGER, "Atenção", "Telefone já cadastrado!"));
+			}
+			
+			request.setAttribute("user", modelTelefone.getUsuario_id());
 			
 			List<ModelTelefone> listaTelefones = daoTelefoneRepository.listaFones(modelTelefone.getUsuario_id().getId());
-			
-			request.setAttribute("msg", MSG.criar(TipoMSG.PRIMARY, "Concluido", "Salvo com Sucesso!"));
-			request.setAttribute("usuario", modelTelefone.getUsuario_id());
+			request.setAttribute("usuario", modelTelefone.getUsuario_cad());
 			request.setAttribute("listaTelefones", listaTelefones);
-//			request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 			request.getRequestDispatcher("/principal/telefone.jsp").forward(request, response);			
 			
 		} catch (Exception e) {
