@@ -443,7 +443,7 @@ public class DAOUsuarioRepository {
 		while (rs.next()) {
 			telefone = new ModelTelefone(rs.getLong("id"), rs.getString("numero"), 
 					rs.getLong("usuario_id"), 
-					this.consultaUsuarioId(rs.getLong("usuario_cad_id")));
+					rs.getLong("usuario_cad_id"));
 			
 			listaTelefones.add(telefone);
 		}
