@@ -65,7 +65,7 @@
 	                                                           	  	<div class="input-group-prepend">
 	                                                            	    <span class="input-group-text" id="basic-addon1">
 																			<c:if test="${user.fotoUser != '' && user.fotoUser != null}">
-																				<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${user.id}">
+																				<a id="linkImage" href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${user.id}">
 																			    	<img class="d-flex align-self-center img-radius" id="fotoembase64" alt="Imagem Usuário" src="${user.fotoUser}" width="70px">
 																			    </a>
 																			</c:if>
@@ -624,7 +624,8 @@
 				elementos[x].value='';
 			}
 			let preview = document.getElementById('fotoembase64');
-			preview.src='';			
+			preview.src='';	
+			document.getElementById("linkImage").href='';		
 			document.getElementById("nome").focus();
 		}
 		

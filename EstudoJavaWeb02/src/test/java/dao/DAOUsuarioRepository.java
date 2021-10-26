@@ -340,6 +340,29 @@ private Connection connection;
 			}
 			return listaUsuarios;
 	}
+
+	public List<ModelLogin> buscarUsuarioListRelatorio(Long usuarioLogado) throws Exception {
+		List<ModelLogin> listaUsuarios = new ArrayList<>();
+		
+		ModelLogin usuario = null;
+		String sql = "select * from model_login WHERE useradmin is false and usuario_id = ? order by nome";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setLong(1, usuarioLogado);
+		ResultSet resultSet= preparedStatement.executeQuery();
+		
+		while (resultSet.next()) {
+			usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
+					"", resultSet.getString("email"), resultSet.getBoolean("useradmin"), resultSet.getString("perfil"), 
+					resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
+					resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
+					resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
+					resultSet.getString("uf"), resultSet.getString("ibge"), resultSet.getDate("datanascimento"),
+					resultSet.getDouble("rendamensal"));
+			
+			listaUsuarios.add(usuario);
+		}
+		return listaUsuarios;
+	}
 	
 	public List<ModelLogin> buscarUsuarioList(Long usuarioLogado) throws Exception {
 		List<ModelLogin> listaUsuarios = new ArrayList<>();

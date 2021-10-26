@@ -16,14 +16,19 @@ public class ServletGenericUtil extends HttpServlet implements Serializable {
 	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 	
 	public Long getUserLogado(HttpServletRequest request) throws Exception {
-		//Long retorno= 0L;
+		Long retorno= 0L;
 		
 		HttpSession session = request.getSession();
 		//String usuarioLogado = (String) session.getAttribute("usuario");
 		//retorno = daoUsuarioRepository.consultaUsuarioLogado(usuarioLogado.getLogin()).getId();
 		//return retorno;
-		ModelLogin usuario =  (ModelLogin) session.getAttribute("usuario");
-		return usuario.getId();
+		
+		ModelLogin usuario = null;  
+		if (session.getAttribute("usuario") != null) {
+			usuario = (ModelLogin) session.getAttribute("usuario");
+			retorno = usuario.getId();
+		}
+		return retorno;
 	}
 
 	public ModelLogin getUserLogadoObject(HttpServletRequest request) throws Exception {
