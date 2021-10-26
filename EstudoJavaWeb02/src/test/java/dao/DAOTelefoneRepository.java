@@ -26,7 +26,7 @@ public class DAOTelefoneRepository {
 		
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setString(1, modelTelefone.getNumero());
-		preparedStatement.setLong(2, modelTelefone.getUsuario_id().getId());
+		preparedStatement.setLong(2, modelTelefone.getUsuario_id());
 		preparedStatement.setLong(3, modelTelefone.getUsuario_cad().getId());
 		preparedStatement.execute();
 		connection.commit();
@@ -52,7 +52,7 @@ public class DAOTelefoneRepository {
 		
 		while (rs.next()) {
 			telefone = new ModelTelefone(rs.getLong("id"), rs.getString("numero"), 
-					daoUsuarioRepository.consultaUsuarioId(rs.getLong("usuario_id")), 
+					rs.getLong("usuario_id"), 
 					daoUsuarioRepository.consultaUsuarioId(rs.getLong("usuario_cad_id")));
 			
 			listaTelefones.add(telefone);

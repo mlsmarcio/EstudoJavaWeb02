@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModelLogin implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -27,6 +29,8 @@ public class ModelLogin implements Serializable{
 	private String cidade;
 	private String uf;
 	private String ibge;
+	
+	private List<ModelTelefone> telefones = new ArrayList<>();
 	
 	public ModelLogin() {
 	}
@@ -57,7 +61,14 @@ public class ModelLogin implements Serializable{
 		this.uf = uf;
 		this.ibge = ibge;
 	}
-
+	
+	public List<ModelTelefone> getTelefones() {
+		return telefones;
+	}
+	public void setTelefones(List<ModelTelefone> telefones) {
+		this.telefones = telefones;
+	}
+	
 	public void setRendamensal(Double rendamensal) {
 		this.rendamensal = rendamensal;
 	}

@@ -7,14 +7,14 @@ public class ModelTelefone implements Serializable {
 	
 	private Long id;
 	private String numero;
-	private ModelLogin usuario_id;
+	private Long usuario_id;
 	private ModelLogin usuario_cad;
 	
 	public ModelTelefone() {
 		super();
 	}
 	
-	public ModelTelefone(Long id, String numero, ModelLogin usuario_id, ModelLogin usuario_cad) {
+	public ModelTelefone(Long id, String numero, Long usuario_id, ModelLogin usuario_cad) {
 		super();
 		this.id = id;
 		this.numero = numero;
@@ -34,10 +34,10 @@ public class ModelTelefone implements Serializable {
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
-	public ModelLogin getUsuario_id() {
+	public Long getUsuario_id() {
 		return usuario_id;
 	}
-	public void setUsuario_id(ModelLogin usuario_id) {
+	public void setUsuario_id(Long usuario_id) {
 		this.usuario_id = usuario_id;
 	}
 	public ModelLogin getUsuario_cad() {

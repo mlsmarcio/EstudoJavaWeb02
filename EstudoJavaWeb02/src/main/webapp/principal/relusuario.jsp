@@ -74,6 +74,7 @@
 																	<tr>
 																		<th scope="col">ID</th>
 																		<th scope="col">NOME</th>
+																		<th scope="col">TELEFONES</th>
 																	</tr>
 																</thead>
 																<tbody>
@@ -81,6 +82,14 @@
 																		<tr>
 																			<td><c:out value="${item.id}"></c:out></td>
 																			<td><c:out value="${item.nome}"></c:out></td>
+																			<td>
+																				<div>
+																					<c:forEach items="${item.telefones}" var="fone">
+																						<h5><span class="badge badge-pill badge-info">${fone.numero}</span></h5>
+																					</c:forEach>
+																				
+																				</div>
+																			</td>
 																		</tr>
 																	</c:forEach>
 																</tbody>

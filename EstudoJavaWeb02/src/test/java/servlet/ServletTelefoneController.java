@@ -64,7 +64,7 @@ public class ServletTelefoneController extends ServletGenericUtil {
 			ModelTelefone modelTelefone = new ModelTelefone();
 			modelTelefone.setNumero(numeroTelefone);
 			
-			modelTelefone.setUsuario_id(daoUsuarioRepository.consultaUsuarioId(Long.parseLong(usuario_id)));
+			modelTelefone.setUsuario_id(Long.parseLong(usuario_id));
 			modelTelefone.setUsuario_cad(super.getUserLogadoObject(request));
 			
 			if (!daoTelefoneRepository.existeFone(numeroTelefone, Long.parseLong(usuario_id))) {
@@ -75,9 +75,9 @@ public class ServletTelefoneController extends ServletGenericUtil {
 				request.setAttribute("msg", MSG.criar(TipoMSG.DANGER, "Atenção", "Telefone já cadastrado!"));
 			}
 			
-			request.setAttribute("user", modelTelefone.getUsuario_id());
+			request.setAttribute("user", daoUsuarioRepository.consultaUsuarioId(modelTelefone.getUsuario_id()));
 			
-			List<ModelTelefone> listaTelefones = daoTelefoneRepository.listaFones(modelTelefone.getUsuario_id().getId());
+			List<ModelTelefone> listaTelefones = daoTelefoneRepository.listaFones(modelTelefone.getUsuario_id());
 			request.setAttribute("usuario", modelTelefone.getUsuario_cad());
 			request.setAttribute("listaTelefones", listaTelefones);
 			request.getRequestDispatcher("/principal/telefone.jsp").forward(request, response);			

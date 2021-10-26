@@ -9,10 +9,11 @@ import java.util.List;
 
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
+import model.ModelTelefone;
 
 public class DAOUsuarioRepository {
 
-private Connection connection;
+	private Connection connection;
 	
 	public DAOUsuarioRepository() {
 		connection = SingleConnectionBanco.getConnection();
@@ -359,6 +360,8 @@ private Connection connection;
 					resultSet.getString("uf"), resultSet.getString("ibge"), resultSet.getDate("datanascimento"),
 					resultSet.getDouble("rendamensal"));
 			
+			usuario.setTelefones(this.listaFones(usuario.getId()));
+			
 			listaUsuarios.add(usuario);
 		}
 		return listaUsuarios;
@@ -427,5 +430,24 @@ private Connection connection;
 //		}
 		return pagina.intValue();
 	}
+	
+	public List<ModelTelefone> listaFones(Long idUsuario) throws Exception {
+		List<ModelTelefone> listaTelefones = new ArrayList<>();
+		
+		ModelTelefone telefone = null;
+		String sql = "select * from telefone where usuario_id =?";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setLong(1, idUsuario);
+		ResultSet rs= preparedStatement.executeQuery();
+		
+		while (rs.next()) {
+			telefone = new ModelTelefone(rs.getLong("id"), rs.getString("numero"), 
+					rs.getLong("usuario_id"), 
+					this.consultaUsuarioId(rs.getLong("usuario_cad_id")));
+			
+			listaTelefones.add(telefone);
+		}
+		return listaTelefones;
+	}	
 	
 }
