@@ -1,9 +1,11 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -366,7 +368,36 @@ public class DAOUsuarioRepository {
 		}
 		return listaUsuarios;
 	}
-	
+
+	public List<ModelLogin> buscarUsuarioListRelatorio(Long usuarioLogado, String dataInicial, String dataFinal) throws Exception {
+		List<ModelLogin> listaUsuarios = new ArrayList<>();
+		
+		ModelLogin usuario = null;
+		String sql = "select * from model_login WHERE useradmin is false and usuario_id = ? and datanascimento between ? and ? order by nome";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setLong(1, usuarioLogado);
+		preparedStatement.setDate(2, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(
+				new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))));
+		preparedStatement.setDate(3, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(
+				new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
+		ResultSet resultSet= preparedStatement.executeQuery();
+		
+		while (resultSet.next()) {
+			usuario = new ModelLogin(resultSet.getLong("id"), resultSet.getString("nome"), resultSet.getString("login"), 
+					"", resultSet.getString("email"), resultSet.getBoolean("useradmin"), resultSet.getString("perfil"), 
+					resultSet.getString("sexo"), resultSet.getString("fotouser"), resultSet.getString("extensaofoto"), 
+					resultSet.getString("cep"), resultSet.getString("logradouro"), resultSet.getString("numero"), 
+					resultSet.getString("complemento"), resultSet.getString("bairro"), resultSet.getString("cidade"), 
+					resultSet.getString("uf"), resultSet.getString("ibge"), resultSet.getDate("datanascimento"),
+					resultSet.getDouble("rendamensal"));
+			
+			usuario.setTelefones(this.listaFones(usuario.getId()));
+			
+			listaUsuarios.add(usuario);
+		}
+		return listaUsuarios;
+	}
+
 	public List<ModelLogin> buscarUsuarioList(Long usuarioLogado) throws Exception {
 		List<ModelLogin> listaUsuarios = new ArrayList<>();
 		

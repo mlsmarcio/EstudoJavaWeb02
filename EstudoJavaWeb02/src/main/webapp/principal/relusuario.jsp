@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>  
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +50,7 @@
 														<form class="form-material" autocomplete="off" method="get"
 														  action="<%=request.getContextPath()%>/ServletUsuarioController" id="formRel">
 															
-															<input type="hidden" name="acao" id="acao" value="imprimirRelatorioUser">
+															<input type="hidden" id="acaoRelatorioImprimirTipo" name="acao" id="acao" value="imprimirRelatorioUser">
 															
 															<div class="form-row align-items-center">
 																<div class="col-auto">
@@ -63,7 +64,8 @@
 																		name="dataFinal" id="dataFinal" value="${dataFinal}" placeholder="Data Inicial">
 																</div>
 																<div class="col-auto">
-																	<button type="submit" class="btn btn-primary mb-2">Imprimir Relatório</button>
+																	<button type="button" onclick="imprimirRelatorio('imprimirRelatorioHTML')" class="btn btn-primary mb-2">Imprimir Relatório</button>
+																	<button type="button" onclick="imprimirRelatorio('imprimirRelatorioPDF')" class="btn btn-primary mb-2">Imprimir PDF</button>
 																</div>
 															</div>
 														</form>
@@ -74,6 +76,7 @@
 																	<tr>
 																		<th scope="col">ID</th>
 																		<th scope="col">NOME</th>
+																		<th scope="col">RENDA MENSAL</th>
 																		<th scope="col">TELEFONES</th>
 																	</tr>
 																</thead>
@@ -82,6 +85,14 @@
 																		<tr>
 																			<td><c:out value="${item.id}"></c:out></td>
 																			<td><c:out value="${item.nome}"></c:out></td>
+																			
+																			<td>
+																				<c:if test="${item.rendamensal > 0}">
+																					<fmt:setLocale value="pt-BR" />
+   																					<fmt:formatNumber value="${item.rendamensal}" minFractionDigits="2" type="currency" />
+																				</c:if>
+																			</td>
+
 																			<td>
 																				<div>
 																					<c:forEach items="${item.telefones}" var="fone">
@@ -117,6 +128,25 @@
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 	
 	<script type="text/javascript">
+    /*
+	// FORMATA O CAMPO MONETÁRIO
+	alert($("#rendamensal").val());
+	alert($("#rendamensal").text());
+	
+	$("#rendamensal").maskMoney({showSymbol : true, symbol : "R$ ", decimal : ",", thousands : "."});
+	const formatter = new Intl.NumberFormat('pt-BR', {currency : 'BRL',	minimumFractionDigits : 2});
+	$("#rendamensal").val("R$ " + formatter.format($("#rendamensal").val()));*/
+	
+	function imprimirRelatorio(valor){
+		document.getElementById("acaoRelatorioImprimirTipo").value = valor;
+		$("#formRel").submit();
+	}
+	
+	/*function imprimirHTML(){
+		document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioUser';
+		$("#formRel").submit();
+	}*/
+	
 	$( function() {
 		  $("#dataInicial, #dataFinal").datepicker({
 			    dateFormat: 'dd/mm/yy',

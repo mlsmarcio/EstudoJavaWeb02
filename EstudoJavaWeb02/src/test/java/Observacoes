@@ -59,5 +59,53 @@ CLASSE DE CONEXÃO
   - copiar código da dependência e colocar no arquivo pom.xml na tag <dependencies> após </description>
   
   
+ ---------------------------------
+ TRABALHANDO COM JASPER 
  
+ INSTALAR O JASPER
+ - https://community.jaspersoft.com/project/jaspersoft-studio/releases
+ 
+ BAIXAR AS DENPENDÊNCIAS CONFORME A VERSÃO
+ 		<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports</artifactId>
+		    <version>6.17.0</version>
+		</dependency>
+		
+CONFIGURAR O JAVA NO ARQUIVO DE CONFIGURAÇÃO DO JASPER 
+- jasperssoft Studio.ini, colocar o path do java após -vm
+  -vm
+  C:\Program Files\Java\jdk-11.0.2\bin
+
+CRIANDO UM RELATÓRIO
+- No jasper - File - New - Other - Jasper Reports Project
+- No eclipse - seleciona o pacote do código fonte do java  ( src/main/java )
+  - botão direito - export, selecione um local para gerar o jar
+- No relatório   jasper
+  - botão direito no projeto, java build path, Libraries
+  - selecione Classpath e Add External Jars
+  - selecione o jar exportado, aplica e fecha
+  
+  - botão direito no projeto, new other, sselecione Jasper Report
+  - defina o relatório, em branco, nome, projeto next, next finish
+  - selecione o arquivo jrxml, click em DataSet and Query .., click em java Bean, em ... localize a classe ex.: modelLogin
+  - Adicione os campos necessários, eles aparecerão em field
+  - para compilar o relatório click em Compiler Reporter
+ 
+ COLOCANDO O RELATÓRIO NO PROJETO ECLIPSE
+  - crie um pacote
+  - localize os arquivos do relatório pelo jasper em propriedades do projeto, copie os arquivos e cole no pacote do projeto eclipse
+  - para editar, abra o arquivo jrxml com o jasper
+  - criar uma classe para imprimir o relatório em PDF, crie um pacote "util" e a classe ReportUtil
+  
+  
+    
+  
+  
+   
+  
+
+
+
  
