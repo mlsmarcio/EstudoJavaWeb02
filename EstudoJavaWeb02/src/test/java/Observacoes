@@ -99,7 +99,11 @@ CRIANDO UM RELATÓRIO
   - para editar, abra o arquivo jrxml com o jasper
   - criar uma classe para imprimir o relatório em PDF, crie um pacote "util" e a classe ReportUtil
   
-  
+ GRAFICO NO JAVA COM FRAMEWORK JAVASCRIPT CHARTJS.ORG
+ - https://www.chartjs.org/
+ 
+ - Em getStart descreve-se a utilização
+ 
     
   
   
