@@ -101,30 +101,47 @@
 	
 	<script type="text/javascript">
 
+		let myChart = new Chart(document.getElementById('myChart'));
+		
 		function gerarGrafico(){
-			const myChart = new Chart(
-				document.getElementById('myChart'),
-				{
-					type: 'line',
-					data: {
-						  labels: [
-							  'January',
-							  'February',
-							  'March',
-							  'April',
-							  'May',
-							  'June',
-						  ],
-						  datasets: [{
-						    label: 'Gráfico Média Salarial Por Tipo',
-						    backgroundColor: 'rgb(255, 99, 132)',
-						    borderColor: 'rgb(255, 99, 132)',
-						    data: [0, 10, 5, 2, 20, 30, 45],
-						  }]
-						},
-					options: {}
+
+			let urlAction = document.getElementById('formRel').action;
+			let dataInicial = document.getElementById('dataInicial').value;
+			let dataFinal = document.getElementById('dataFinal').value;
+			$.ajax({
+				method: "get",
+				url: urlAction,
+				data: "dataInicial=" + dataInicial + '&dataFinal=' + dataFinal + '&acao=graficoSalario',
+				success: function(response){
+					
+					let json = JSON.parse(response);
+					
+					//alert(json.perfils);
+					//alert(json.salarios);
+					myChart.destroy();
+					myChart = new Chart(
+							document.getElementById('myChart'),
+							{
+								type: 'line',
+								data: {
+									  labels: json.perfils,
+									  datasets: [{
+									    label: 'Gráfico Média Salarial Por Tipo',
+									    backgroundColor: 'rgb(255, 99, 132)',
+									    borderColor: 'rgb(255, 99, 132)',
+									    data: json.salarios,
+									  }]
+									},
+								options: {}
+							}
+					  	);						
 				}
-		  	);			
+				
+			}).fail(function(xhr, status, errorThrown){
+				alert('Erro ao buscar dados para o gráfico: ' + xhr.responseText);
+			});
+			
+		
 		}
 		
 		$( function() {
@@ -147,3 +164,4 @@
 </body>
 
 </html>
+

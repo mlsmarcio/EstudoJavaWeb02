@@ -12,6 +12,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beansDto.BeanDtoGraficoSalarioUser;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -149,6 +150,27 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				
 				response.setHeader("Content-Disposition", "attachment;filename=arquivo.pdf");
 				response.getOutputStream().write(relatorio);
+
+				
+			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("graficoSalario")) {
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+				
+				BeanDtoGraficoSalarioUser beanDtoGraficoSalarioUser = null;
+				
+				if ((dataInicial == null || dataInicial.isEmpty()) && (dataFinal == null || dataFinal.isEmpty())) {
+					
+					beanDtoGraficoSalarioUser = daoUsuarioRepository
+							.montarGraficoMediaSalario(super.getUserLogado(request));
+					
+				}else {
+					beanDtoGraficoSalarioUser = daoUsuarioRepository
+							.montarGraficoMediaSalario(super.getUserLogado(request), dataInicial, dataFinal);
+				}
+				
+				ObjectMapper mapper = new ObjectMapper();
+				String json = mapper.writeValueAsString(beanDtoGraficoSalarioUser);
+				response.getWriter().write(json);
 				
 			}else {
 				List<ModelLogin> usuarios = daoUsuarioRepository.buscarUsuarioList(super.getUserLogado(request));

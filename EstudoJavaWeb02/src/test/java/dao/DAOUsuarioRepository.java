@@ -22,6 +22,36 @@ public class DAOUsuarioRepository {
 		connection = SingleConnectionBanco.getConnection();
 	}
 	
+	public BeanDtoGraficoSalarioUser montarGraficoMediaSalario(Long userLogado, String dataInicial, String dataFinal) throws Exception {
+		String sql = "select avg(rendamensal) as media_salarial, perfil from model_login "
+				+ "where usuario_id=? and datanascimento between ? and ? group by perfil";
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setLong(1, userLogado);
+		preparedStatement.setDate(2, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(
+				new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))));		
+		preparedStatement.setDate(3, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(
+				new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));		
+		ResultSet reulResultSet = preparedStatement.executeQuery();
+		
+		List<String> perfils = new ArrayList<>();
+		List<Double> salarios = new ArrayList<>();
+		BeanDtoGraficoSalarioUser beanGrafico = new BeanDtoGraficoSalarioUser();
+		
+		Double media_salarial = 0.0;
+		String perfil = "";
+		while (reulResultSet.next()) {
+			media_salarial = reulResultSet.getDouble("media_salarial");
+			perfil = reulResultSet.getString("perfil");
+			
+			beanGrafico.getSalarios().add(media_salarial);
+			beanGrafico.getPerfils().add(perfil);
+			//salarios.add(media_salarial);
+			//perfils.add(perfil);
+		}
+		return beanGrafico;
+	}	
+
 	public BeanDtoGraficoSalarioUser montarGraficoMediaSalario(Long userLogado) throws Exception{
 		String sql = "select avg(rendamensal) as media_salarial, perfil from model_login "
 				+ "where usuario_id=? group by perfil";
@@ -507,6 +537,6 @@ public class DAOUsuarioRepository {
 			listaTelefones.add(telefone);
 		}
 		return listaTelefones;
-	}	
+	}
 	
 }
