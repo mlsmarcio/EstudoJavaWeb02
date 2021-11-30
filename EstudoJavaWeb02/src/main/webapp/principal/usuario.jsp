@@ -209,7 +209,7 @@
                                                             <c:if test="${user.id > 0}">
                                                             	<a href="<%= request.getContextPath() %>/ServletTelefoneController?idUser=${user.id}" class="btn btn-primary waves-effect waves-light">Telefone</a>
                                                             </c:if>
-                                                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exemploModal">Pesquisar</button>
+                                                            <button id="botaoPesquisa" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exemploModal">Pesquisar</button>
                                                         </form>
 				                                        
 			                                        </div>
@@ -324,10 +324,14 @@
 	      <div class="modal-body">
 	        
 			<div class="input-group mb-3">
-			  <input type="text" class="form-control" placeholder="Nome" aria-label="name" id="nomeBusca" name="nomeBusca" aria-describedby="basic-addon2">
-			  <div class="input-group-append">
-			    <button class="btn btn-success" type="button" onclick="buscarUsuario()">Buscar</button>
-			  </div>
+				
+			  	<input type="text" class="form-control" placeholder="Nome" aria-label="name" id="nomeBusca" 
+			  		name="nomeBusca" aria-describedby="basic-addon2">
+			  	
+			  	<div class="input-group-append">
+			    	<button class="btn btn-success" type="button" onclick="buscarUsuario()">Buscar</button>
+			  	</div>
+			  	
 			</div>	    
 			
 			<div style="height: 300px; overflow: scroll;">
@@ -370,7 +374,7 @@
 		//--
 		
 		// FORMATA A DATA
-		if ($("#dataNascimento").val() != null) {
+		if ($("#dataNascimento").val() != null && $("#dataNascimento").val() != '') {
 			let dataNascimento = $("#dataNascimento").val();
 			let dateFormat = new Date(dataNascimento);
 	    	$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR', {timeZone: 'UTC'}));
@@ -628,7 +632,14 @@
 			document.getElementById("linkImage").href='';		
 			document.getElementById("nome").focus();
 		}
-		
+/*
+		$( "#nomeBusca" ).keypress(function( event ) {
+			  if ( event.which == 13 ) {
+				  event.preventDefault();
+				  alert('entrou');
+			     buscarUsuario();
+			  }
+		}		*/
 	</script>
 </body>
 

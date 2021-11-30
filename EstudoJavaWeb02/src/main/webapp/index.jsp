@@ -7,8 +7,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="resources/css/bootstrap.css">
-	<link rel="stylesheet" href="resources/css/estilo.css">
+	<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/bootstrap.css">
+	<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/estilo.css">
 	
 	<title>CURSO JSP</title>
 </head>
